@@ -491,6 +491,27 @@ export function formatPrice(price: number) {
   }).format(price);
 }
 
+export function itemId(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export function findMenuItem(id: string) {
+  for (const category of menuCategories) {
+    const match = category.items.find((item) => itemId(item.name) === id);
+    if (match) return match;
+  }
+  return null;
+}
+
+export function allMenuItems() {
+  return menuCategories.flatMap((category) =>
+    category.items.map((item) => ({ ...item, id: itemId(item.name), categoryId: category.id }))
+  );
+}
+
 export const featuredDishes = [
   {
     name: "Chicken Biryani",

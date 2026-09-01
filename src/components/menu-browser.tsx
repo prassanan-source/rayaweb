@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { AddToCartButton } from "@/components/add-to-cart-button";
 import { formatPrice, menuCategories, type Dietary } from "@/lib/menu";
 import { cn } from "@/lib/utils";
 
@@ -72,7 +73,7 @@ export function MenuBrowser() {
               </div>
               <ul className="divide-y divide-primary/10 border-y border-primary/10">
                 {category.items.map((item) => (
-                  <li key={item.name} className="flex flex-col gap-2 py-5 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
+                  <li key={item.name} className="flex flex-col gap-3 py-5 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
                         <h3 className="font-medium tracking-wide text-foreground">{item.name}</h3>
@@ -91,7 +92,10 @@ export function MenuBrowser() {
                         {item.description}
                       </p>
                     </div>
-                    <p className="shrink-0 font-heading text-lg text-primary">{formatPrice(item.price)}</p>
+                    <div className="flex shrink-0 items-center gap-3">
+                      <p className="font-heading text-lg text-primary">{formatPrice(item.price)}</p>
+                      <AddToCartButton item={item} />
+                    </div>
                   </li>
                 ))}
               </ul>

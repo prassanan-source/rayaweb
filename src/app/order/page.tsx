@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Clock, ShoppingBag, Truck } from "lucide-react";
 import { OpenBadge } from "@/components/open-badge";
 import { OrderButton } from "@/components/order-button";
+import { buttonVariants } from "@/components/ui/button";
 import { restaurant, toastOrderUrl } from "@/lib/restaurant";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Order online",
   description:
-    "Order Raya pickup or delivery on Toast. Commission-free tickets go straight to the kitchen at 7150 Village Pkwy, Dublin.",
+    "Order Raya pickup or delivery. Kitchen tickets are created only after Toast confirms the order for 7150 Village Pkwy.",
 };
 
 export default function OrderPage() {
@@ -17,8 +20,9 @@ export default function OrderPage() {
         <p className="text-xs tracking-[0.3em] text-primary uppercase">Toast</p>
         <h1 className="mt-3 font-heading text-5xl sm:text-6xl">Order for pickup or delivery</h1>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-          Checkout happens on Toast for {restaurant.toast.locationName}. There is no extra
-          marketplace fee — your order lands in our kitchen as soon as you pay.
+          An RY ticket number is issued only after Toast stores the order for{" "}
+          {restaurant.toast.locationName}. If Toast does not accept the ticket, you will not see
+          “Order placed” and the kitchen will not see a ticket.
         </p>
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <OpenBadge />
@@ -31,33 +35,29 @@ export default function OrderPage() {
       <div className="mt-12 grid gap-6 lg:grid-cols-2">
         <article className="rounded-2xl bg-card p-8 ring-1 ring-primary/15">
           <ShoppingBag className="size-6 text-primary" />
-          <h2 className="mt-5 font-heading text-3xl">Pickup</h2>
+          <h2 className="mt-5 font-heading text-3xl">Order on this site</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            Place the order, drive to 7150 Village Pkwy, and walk in when it is ready. Use the
-            Toast status updates for timing.
+            Add dishes from the menu, then checkout. We POST the ticket to Toast and only show a
+            number after Toast returns the same order on GET.
           </p>
-          <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
-            <li>Ready for pickup at the restaurant counter</li>
-            <li>Same menu as dine-in, priced on Toast</li>
-          </ul>
-          <div className="mt-8">
-            <OrderButton mode="pickup" />
-          </div>
+          <Link
+            href="/menu"
+            className={cn(buttonVariants({ size: "lg" }), "mt-8 h-12 px-6 text-base")}
+          >
+            Start with the menu
+          </Link>
         </article>
 
         <article className="rounded-2xl bg-card p-8 ring-1 ring-primary/15">
           <Truck className="size-6 text-primary" />
-          <h2 className="mt-5 font-heading text-3xl">Delivery</h2>
+          <h2 className="mt-5 font-heading text-3xl">Pay on Toast</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            Toast delivery covers Dublin and the surrounding Tri-Valley. Enter your address on
-            Toast to confirm we can reach you.
+            Card checkout runs on Toast’s branded ordering page for this location — that is the
+            channel that fires tickets into the POS.
           </p>
-          <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
-            <li>Dublin, Pleasanton, Livermore, San Ramon, and nearby cities</li>
-            <li>Kitchen cutoff 9:45 PM</li>
-          </ul>
-          <div className="mt-8">
-            <OrderButton mode="delivery" />
+          <div className="mt-8 flex flex-wrap gap-3">
+            <OrderButton mode="pickup" />
+            <OrderButton mode="delivery" variant="outline" />
           </div>
         </article>
       </div>
@@ -68,18 +68,15 @@ export default function OrderPage() {
           <div>
             <h2 className="font-heading text-2xl">Prefer to call?</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              We take phone orders at{" "}
+              Phone orders at{" "}
               <a href={restaurant.phoneHref} className="text-primary hover:underline">
                 {restaurant.phone}
               </a>
-              . Catering and large trays — email{" "}
+              . Catering — email{" "}
               <a href={restaurant.emailHref} className="text-primary hover:underline">
                 {restaurant.email}
               </a>
               .
-            </p>
-            <p className="mt-4 text-xs text-muted-foreground">
-              Location GUID {restaurant.toast.guid}
             </p>
             <a
               href={toastOrderUrl()}
@@ -87,7 +84,7 @@ export default function OrderPage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Open the full Toast menu
+              Open Toast Online Ordering
             </a>
           </div>
         </div>

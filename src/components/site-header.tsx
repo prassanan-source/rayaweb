@@ -13,6 +13,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { restaurant, toastOrderUrl } from "@/lib/restaurant";
+import { CartButton } from "@/components/cart-button";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -59,54 +60,67 @@ export function SiteHeader() {
             rel="noopener noreferrer"
             className={cn(buttonVariants({ size: "lg" }), "h-10 px-4")}
           >
-            Order online
+            Order on Toast
           </a>
         </nav>
 
-        <Sheet>
-          <SheetTrigger
-            render={
-              <Button variant="outline" size="icon" className="md:hidden" aria-label="Open menu" />
-            }
-          >
-            <Menu />
-          </SheetTrigger>
-          <SheetContent side="right" className="bg-background">
-            <SheetHeader>
-              <SheetTitle className="font-heading text-2xl text-primary">{restaurant.name}</SheetTitle>
-            </SheetHeader>
-            <nav className="flex flex-col gap-1 px-2">
-              {links.map((link) => (
+        <div className="flex items-center gap-2">
+          <CartButton />
+          <Sheet>
+            <SheetTrigger
+              render={
+                <Button variant="outline" size="icon" className="md:hidden" aria-label="Open menu" />
+              }
+            >
+              <Menu />
+            </SheetTrigger>
+            <SheetContent side="right" className="bg-background">
+              <SheetHeader>
+                <SheetTitle className="font-heading text-2xl text-primary">{restaurant.name}</SheetTitle>
+              </SheetHeader>
+              <nav className="flex flex-col gap-1 px-2">
+                {links.map((link) => (
+                  <SheetClose
+                    key={link.href}
+                    render={
+                      <Link
+                        href={link.href}
+                        className={cn(
+                          "rounded-lg px-3 py-3 text-base",
+                          pathname === link.href ? "bg-muted text-primary" : "text-foreground"
+                        )}
+                      />
+                    }
+                  >
+                    {link.label}
+                  </SheetClose>
+                ))}
                 <SheetClose
-                  key={link.href}
                   render={
                     <Link
-                      href={link.href}
-                      className={cn(
-                        "rounded-lg px-3 py-3 text-base",
-                        pathname === link.href ? "bg-muted text-primary" : "text-foreground"
-                      )}
+                      href="/order/checkout"
+                      className="rounded-lg px-3 py-3 text-base"
                     />
                   }
                 >
-                  {link.label}
+                  Checkout
                 </SheetClose>
-              ))}
-              <SheetClose
-                render={
-                  <a
-                    href={toastOrderUrl()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={cn(buttonVariants({ size: "lg" }), "mt-4 h-12 justify-center")}
-                  />
-                }
-              >
-                Order online
-              </SheetClose>
-            </nav>
-          </SheetContent>
-        </Sheet>
+                <SheetClose
+                  render={
+                    <a
+                      href={toastOrderUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(buttonVariants({ size: "lg" }), "mt-4 h-12 justify-center")}
+                    />
+                  }
+                >
+                  Order on Toast
+                </SheetClose>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </header>
   );

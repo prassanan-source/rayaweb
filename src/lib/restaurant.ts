@@ -49,8 +49,8 @@ export function formattedAddress() {
 }
 
 export function toastOrderUrl(mode?: "pickup" | "delivery") {
-  const { slug, guid } = restaurant.toast;
-  const base = `https://www.toasttab.com/local/order/${slug}/r-${guid}`;
+  const { slug } = restaurant.toast;
+  const base = `https://order.toasttab.com/online/${slug}`;
   if (mode === "pickup") return `${base}?diningOption=takeout`;
   if (mode === "delivery") return `${base}?diningOption=delivery`;
   return base;

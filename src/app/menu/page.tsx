@@ -15,8 +15,8 @@ export default function MenuPage() {
         <p className="text-xs tracking-[0.3em] text-primary uppercase">Kitchen</p>
         <h1 className="mt-3 font-heading text-5xl sm:text-6xl">The menu</h1>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-          Prices shown for dine-in and Toast ordering. Spice levels vary — ask us when you order.
-          Online checkout is on Toast so the ticket goes straight to our kitchen.
+          Add dishes to your bag, then checkout. An RY ticket number appears only after Toast
+          stores the order for this kitchen — not before.
         </p>
         <div className="mt-6">
           <OrderButton />

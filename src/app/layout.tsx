@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Geist_Mono, Outfit } from "next/font/google";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { CartProvider } from "@/components/cart-provider";
 import { restaurant } from "@/lib/restaurant";
 import "./globals.css";
 
@@ -58,11 +59,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
-        <SiteHeader />
-        <main id="content" className="flex-1">
-          {children}
-        </main>
-        <SiteFooter />
+        <CartProvider>
+          <SiteHeader />
+          <main id="content" className="flex-1">
+            {children}
+          </main>
+          <SiteFooter />
+        </CartProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

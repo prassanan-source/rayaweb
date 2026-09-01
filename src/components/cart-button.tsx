@@ -1,0 +1,98 @@
+"use client";
+
+import Link from "next/link";
+import { Minus, Plus, ShoppingBag } from "lucide-react";
+import { useCart } from "@/components/cart-provider";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { formatPrice } from "@/lib/menu";
+import { cn } from "@/lib/utils";
+
+export function CartButton() {
+  const { count, lines, subtotal, setQuantity } = useCart();
+
+  return (
+    <Sheet>
+      <SheetTrigger
+        render={
+          <Button variant="outline" className="relative h-10 gap-2 px-3">
+            <ShoppingBag className="size-4" />
+            <span className="hidden sm:inline">Bag</span>
+            {count > 0 ? (
+              <span className="absolute -right-1.5 -top-1.5 flex size-5 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground">
+                {count}
+              </span>
+            ) : null}
+          </Button>
+        }
+      />
+      <SheetContent side="right" className="bg-background">
+        <SheetHeader>
+          <SheetTitle className="font-heading text-2xl text-primary">Your bag</SheetTitle>
+        </SheetHeader>
+        <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 pb-6">
+          {lines.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              The bag is empty. Add dishes from the menu, then check out. A kitchen ticket is only
+              created after Toast accepts the order.
+            </p>
+          ) : (
+            <>
+              <ul className="space-y-4">
+                {lines.map((line) => (
+                  <li key={line.itemId} className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-medium">{line.name}</p>
+                      <p className="text-xs text-muted-foreground">{formatPrice(line.price)}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="icon-xs"
+                        aria-label={`Remove one ${line.name}`}
+                        onClick={() => setQuantity(line.itemId, line.quantity - 1)}
+                      >
+                        <Minus />
+                      </Button>
+                      <span className="w-5 text-center text-sm">{line.quantity}</span>
+                      <Button
+                        variant="outline"
+                        size="icon-xs"
+                        aria-label={`Add one ${line.name}`}
+                        onClick={() => setQuantity(line.itemId, line.quantity + 1)}
+                      >
+                        <Plus />
+                      </Button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-auto border-t border-primary/15 pt-4">
+                <p className="flex justify-between text-sm">
+                  <span>Subtotal</span>
+                  <span className="text-primary">{formatPrice(subtotal)}</span>
+                </p>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Tax is calculated by Toast. You will not get an order number until the kitchen
+                  ticket lands in Toast.
+                </p>
+                <Link
+                  href="/order/checkout"
+                  className={cn(buttonVariants({ size: "lg" }), "mt-4 h-12 w-full justify-center")}
+                >
+                  Checkout
+                </Link>
+              </div>
+            </>
+          )}
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
