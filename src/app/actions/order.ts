@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { clearCartAction } from "@/app/actions/cart";
 import { readBag } from "@/lib/bag";
+import { missingCredentialMessage, credentialInventory } from "@/lib/toast/diagnose";
 import { toastApi, toastIsConfigured } from "@/lib/toast/client";
 import { placeKitchenOrder } from "@/lib/toast/place-order";
 import type { DiningMode, PlaceOrderResult } from "@/lib/toast/types";
@@ -25,8 +26,7 @@ export async function placeOrderAction(
     return {
       ok: false,
       code: "TOAST_NOT_CONFIGURED",
-      error:
-        "Toast API credentials are not connected, so this site cannot create a kitchen ticket. Complete checkout on Toast Online Ordering instead.",
+      error: missingCredentialMessage(),
     };
   }
 
@@ -55,7 +55,12 @@ export async function placeOrderAction(
     toastApi
   );
 
-  if (!result.ok) return result;
+  if (!result.ok) {
+    return {
+      ...result,
+      error: `${result.error}\n\n${credentialInventory()}`,
+    };
+  }
 
   await clearCartAction();
   redirect(`/order/confirmed?guid=${encodeURIComponent(result.toastGuid)}`);

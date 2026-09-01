@@ -64,6 +64,8 @@ export type PlaceOrderFailure = {
   ok: false;
   code:
     | "TOAST_NOT_CONFIGURED"
+    | "TOAST_AUTH_FAILED"
+    | "TOAST_FORBIDDEN"
     | "TOAST_REJECTED"
     | "TOAST_NOT_CONFIRMED"
     | "TOAST_NO_TICKET"

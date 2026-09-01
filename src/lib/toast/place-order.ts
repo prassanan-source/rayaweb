@@ -1,5 +1,6 @@
 import { findMenuItem } from "@/lib/menu";
 import { guestTicketFromToastOrder } from "@/lib/toast/ticket";
+import { failureFromUnknown } from "@/lib/toast/errors";
 import type {
   PlaceOrderInput,
   PlaceOrderResult,
@@ -58,11 +59,11 @@ export async function placeKitchenOrder(
   try {
     diningOptionGuid = await toast.resolveDiningOptionGuid(input.diningOption);
   } catch (error) {
-    return {
+    return failureFromUnknown(error, {
       ok: false,
       code: "TOAST_REJECTED",
-      error: error instanceof Error ? error.message : "Toast dining option is unavailable.",
-    };
+      error: "Toast dining option is unavailable.",
+    });
   }
 
   const selections = [];
@@ -80,11 +81,11 @@ export async function placeKitchenOrder(
       });
     }
   } catch (error) {
-    return {
+    return failureFromUnknown(error, {
       ok: false,
       code: "TOAST_REJECTED",
-      error: error instanceof Error ? error.message : "A menu item is not available in Toast.",
-    };
+      error: "A menu item is not available in Toast.",
+    });
   }
 
   const payload: Record<string, unknown> = {
@@ -119,11 +120,11 @@ export async function placeKitchenOrder(
   try {
     posted = await toast.postOrder(payload);
   } catch (error) {
-    return {
+    return failureFromUnknown(error, {
       ok: false,
       code: "TOAST_REJECTED",
-      error: error instanceof Error ? error.message : "Toast rejected the order.",
-    };
+      error: "Toast rejected the order.",
+    });
   }
 
   if (!posted?.guid) {
@@ -138,11 +139,11 @@ export async function placeKitchenOrder(
   try {
     verified = await toast.getOrder(posted.guid);
   } catch (error) {
-    return {
+    return failureFromUnknown(error, {
       ok: false,
       code: "TOAST_NOT_CONFIRMED",
-      error: error instanceof Error ? error.message : "Toast did not confirm the kitchen ticket.",
-    };
+      error: "Toast did not confirm the kitchen ticket.",
+    });
   }
 
   if (!verified?.guid || verified.guid !== posted.guid) {

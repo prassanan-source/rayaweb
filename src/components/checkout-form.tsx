@@ -106,7 +106,7 @@ export function CheckoutForm() {
         </p>
         {state && !state.ok ? (
           <div className="mt-4 rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
-            <p>{state.error}</p>
+            <p className="whitespace-pre-wrap">{state.error}</p>
             <a
               href={toastOrderUrl(diningOption)}
               className="mt-2 inline-block underline"

@@ -1,4 +1,6 @@
 import { restaurant } from "@/lib/restaurant";
+import { classifyToastHttp, ToastApiError } from "@/lib/toast/errors";
+import { privilegeMessage, readTokenScopes } from "@/lib/toast/diagnose";
 import type { DiningMode, ToastMenuMapping, ToastOrder, ToastPort } from "@/lib/toast/types";
 
 function requiredEnv(name: string) {
@@ -44,7 +46,10 @@ async function toastFetch(path: string, init: RequestInit & { token: string }) {
 async function authenticate() {
   const { host, clientId, clientSecret } = toastConfig();
   if (!clientId || !clientSecret) {
-    throw new Error("Toast API credentials are not configured.");
+    throw new ToastApiError(
+      "Toast API credentials are not configured.",
+      "TOAST_NOT_CONFIGURED"
+    );
   }
   if (cachedToken && cachedToken.expiresAt > Date.now() + 30_000) {
     return cachedToken.accessToken;
@@ -61,15 +66,32 @@ async function authenticate() {
   });
 
   if (!response.ok) {
-    throw new Error(`Toast authentication failed (${response.status}).`);
+    const detail = await response.text();
+    if (response.status === 401) {
+      throw classifyToastHttp(401, "login", detail);
+    }
+    throw classifyToastHttp(response.status, "login", detail);
   }
 
   const body = (await response.json()) as {
     token?: { accessToken?: string; expiresIn?: number };
+    status?: string;
   };
   const accessToken = body.token?.accessToken;
   if (!accessToken) {
-    throw new Error("Toast authentication did not return an access token.");
+    throw new ToastApiError(
+      "Toast login HTTP was OK but no access token came back. The client ID/secret may be for a different API product.",
+      "TOAST_AUTH_FAILED",
+      response.status
+    );
+  }
+
+  const scopes = readTokenScopes(accessToken);
+  if (scopes.length > 0 && !scopes.includes("orders.orders:write")) {
+    throw new ToastApiError(
+      `${privilegeMessage(scopes)} No kitchen ticket was created.`,
+      "TOAST_FORBIDDEN"
+    );
   }
 
   cachedToken = {
@@ -142,7 +164,7 @@ async function loadMenu(token: string) {
   if (cachedMenu) return cachedMenu;
   const response = await toastFetch("/menus/v3/menus", { method: "GET", token });
   if (!response.ok) {
-    throw new Error(`Toast menu lookup failed (${response.status}).`);
+    throw classifyToastHttp(response.status, "menu read", await response.text());
   }
   const body = await response.json();
   cachedMenu = flattenMenuItems(body);
@@ -156,7 +178,7 @@ async function loadDiningOptions(token: string) {
   if (cachedDining?.pickup && cachedDining.delivery) return cachedDining;
   const response = await toastFetch("/config/v2/diningOptions", { method: "GET", token });
   if (!response.ok) {
-    throw new Error(`Toast dining options failed (${response.status}).`);
+    throw classifyToastHttp(response.status, "dining-option read", await response.text());
   }
   const body = (await response.json()) as Array<{ guid?: string; behavior?: string; name?: string }>;
   const pickup =
@@ -203,8 +225,7 @@ export const toastApi: ToastPort = {
       body: JSON.stringify(order),
     });
     if (!response.ok) {
-      const detail = await response.text();
-      throw new Error(`Toast rejected the order (${response.status}): ${detail.slice(0, 280)}`);
+      throw classifyToastHttp(response.status, "order create", await response.text());
     }
     return (await response.json()) as ToastOrder;
   },
@@ -214,7 +235,7 @@ export const toastApi: ToastPort = {
     const response = await toastFetch(`/orders/v2/orders/${guid}`, { method: "GET", token });
     if (response.status === 404) return null;
     if (!response.ok) {
-      throw new Error(`Toast could not load the order (${response.status}).`);
+      throw classifyToastHttp(response.status, "order lookup", await response.text());
     }
     return (await response.json()) as ToastOrder;
   },

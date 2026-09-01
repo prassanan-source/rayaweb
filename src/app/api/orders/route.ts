@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { placeKitchenOrder } from "@/lib/toast/place-order";
 import { toastApi, toastIsConfigured } from "@/lib/toast/client";
+import { missingCredentialMessage, credentialInventory } from "@/lib/toast/diagnose";
 import type { PlaceOrderInput } from "@/lib/toast/types";
 
 export async function POST(request: Request) {
@@ -9,8 +10,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         code: "TOAST_NOT_CONFIGURED",
-        error:
-          "Toast API credentials are not connected, so this site cannot create a kitchen ticket. Complete checkout on Toast Online Ordering instead.",
+        error: missingCredentialMessage(),
       },
       { status: 503 }
     );
@@ -27,5 +27,11 @@ export async function POST(request: Request) {
   }
 
   const result = await placeKitchenOrder(body, toastApi);
-  return NextResponse.json(result, { status: result.ok ? 201 : 409 });
+  if (!result.ok) {
+    return NextResponse.json(
+      { ...result, error: `${result.error}\n\n${credentialInventory()}` },
+      { status: 409 }
+    );
+  }
+  return NextResponse.json(result, { status: 201 });
 }
