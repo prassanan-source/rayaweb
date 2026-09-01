@@ -21,7 +21,12 @@ If Toast rejects the POST, or GET cannot load the order, the guest sees an error
 
 ## Run locally
 
+You need **Node.js 22** (includes `npm`). If the terminal says `npm: command not found`, install Node first — see `START-STOP.txt` or run `./install-node.sh`.
+
 ```bash
+# Linux / macOS, if npm is missing:
+./install-node.sh
+
 npm install
 cp .env.example .env.local
 # fill TOAST_CLIENT_ID and TOAST_CLIENT_SECRET

@@ -1,25 +1,82 @@
 # Start and stop Raya
 
-Unzip, then in a terminal:
+You need Node.js 22 (that package includes npm). If you see
+`npm: command not found`, Node is not installed yet.
+
+## 1. Install Node.js / npm
+
+Linux / macOS (no sudo — recommended):
 
 ```bash
+cd rayaweb
+chmod +x install-node.sh start.sh stop.sh
+./install-node.sh
+```
+
+Then close the terminal, open a new one, and continue. If npm is still
+missing after that:
+
+```bash
+export NVM_DIR="$HOME/.nvm"
+. "$NVM_DIR/nvm.sh"
+```
+
+Ubuntu / Debian (system-wide, needs sudo):
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt-get install -y nodejs
+node -v
+npm -v
+```
+
+macOS Homebrew:
+
+```bash
+brew install node@22
+```
+
+Windows PowerShell (as Administrator):
+
+```powershell
+winget install OpenJS.NodeJS.LTS
+```
+
+Close PowerShell completely, open a new window, then `npm -v` should work.
+Or install from https://nodejs.org/en/download (LTS).
+
+## 2. Unzip and install packages
+
+```bash
+unzip rayaweb.zip
 cd rayaweb
 npm install
 ```
 
-## Start the server
+Windows: extract the zip in File Explorer, then in PowerShell:
+
+```powershell
+cd path\to\rayaweb
+npm install
+```
+
+## 3. Start the server
 
 ```bash
 npm run dev
 ```
 
+or:
+
+```bash
+./start.sh
+```
+
 The site is at http://127.0.0.1:43127
 
-Or: `./start.sh`
+## 4. Stop the server
 
-## Stop the server
-
-In the same terminal: **Ctrl+C**
+In the same terminal: Ctrl+C
 
 If it is still running in the background (Linux / Mac):
 
@@ -30,7 +87,7 @@ If it is still running in the background (Linux / Mac):
 or:
 
 ```bash
-npx --yes kill-port 43127
+npm run stop
 ```
 
 or:
