@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Geist_Mono, Outfit } from "next/font/google";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { CartProvider } from "@/components/cart-provider";
+import { readBag } from "@/lib/bag";
 import { restaurant } from "@/lib/restaurant";
 import "./globals.css";
 
@@ -46,7 +47,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const initialLines = await readBag();
   return (
     <html
       lang="en"
@@ -59,7 +61,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
-        <CartProvider>
+        <CartProvider
+          key={initialLines.map((line) => `${line.itemId}:${line.quantity}`).join("|")}
+          initialLines={initialLines}
+        >
           <SiteHeader />
           <main id="content" className="flex-1">
             {children}

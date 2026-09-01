@@ -1,14 +1,8 @@
 "use client";
 
 import { createContext, useContext, useMemo, useState } from "react";
+import type { CartLine } from "@/lib/bag";
 import { findMenuItem, formatPrice, itemId, type MenuItem } from "@/lib/menu";
-
-export type CartLine = {
-  itemId: string;
-  name: string;
-  price: number;
-  quantity: number;
-};
 
 type CartContextValue = {
   lines: CartLine[];
@@ -21,8 +15,14 @@ type CartContextValue = {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [lines, setLines] = useState<CartLine[]>([]);
+export function CartProvider({
+  children,
+  initialLines,
+}: {
+  children: React.ReactNode;
+  initialLines: CartLine[];
+}) {
+  const [lines, setLines] = useState<CartLine[]>(initialLines);
 
   const value = useMemo<CartContextValue>(() => {
     const count = lines.reduce((sum, line) => sum + line.quantity, 0);

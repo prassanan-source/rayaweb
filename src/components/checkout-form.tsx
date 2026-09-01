@@ -7,6 +7,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { clearCartAction } from "@/app/actions/cart";
 import { formatPrice } from "@/lib/menu";
 import { formattedAddress, toastOrderUrl } from "@/lib/restaurant";
 import type { DiningMode, PlaceOrderResult } from "@/lib/toast/types";
@@ -70,6 +71,7 @@ export function CheckoutForm() {
       }
 
       clear();
+      await clearCartAction();
       router.push(`/order/confirmed?guid=${encodeURIComponent(result.toastGuid)}`);
     } catch {
       setError("Could not reach the kitchen. No order number was issued.");
