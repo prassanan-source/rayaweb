@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/cart-provider";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { formatPrice } from "@/lib/menu";
 import { formattedAddress, toastOrderUrl } from "@/lib/restaurant";
 import type { DiningMode, PlaceOrderResult } from "@/lib/toast/types";
+import { cn } from "@/lib/utils";
 
 export function CheckoutForm() {
   const router = useRouter();
@@ -171,9 +172,13 @@ export function CheckoutForm() {
             </a>
           </div>
         ) : null}
-        <Button type="submit" className="mt-6 h-12 w-full" disabled={pending}>
+        <button
+          type="submit"
+          className={cn(buttonVariants({ size: "lg" }), "mt-6 h-12 w-full")}
+          disabled={pending}
+        >
           {pending ? "Sending to Toast…" : "Place order"}
-        </Button>
+        </button>
       </aside>
     </form>
   );
@@ -204,6 +209,7 @@ function Field({
         required={required}
         autoComplete={autoComplete}
         defaultValue={defaultValue}
+        className="h-10"
       />
     </div>
   );
