@@ -1,0 +1,48 @@
+# Start and stop Raya
+
+Unzip, then in a terminal:
+
+```bash
+cd rayaweb
+npm install
+```
+
+## Start the server
+
+```bash
+npm run dev
+```
+
+The site is at http://127.0.0.1:43127
+
+Or: `./start.sh`
+
+## Stop the server
+
+In the same terminal: **Ctrl+C**
+
+If it is still running in the background (Linux / Mac):
+
+```bash
+./stop.sh
+```
+
+or:
+
+```bash
+npx --yes kill-port 43127
+```
+
+or:
+
+```bash
+kill $(lsof -t -i:43127)
+```
+
+Windows PowerShell:
+
+```powershell
+Get-NetTCPConnection -LocalPort 43127 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }
+```
+
+Copy `.env.example` to `.env.local` and add Toast keys if you want kitchen tickets. Then start again.

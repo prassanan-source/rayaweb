@@ -37,6 +37,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# zip of this project
+rayaweb.zip
+

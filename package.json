@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0 --port 43127",
+    "stop": "sh stop.sh",
     "build": "next build",
     "start": "next start --hostname 0.0.0.0 --port 43127",
     "lint": "eslint",
