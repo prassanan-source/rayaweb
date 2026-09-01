@@ -1,11 +1,3 @@
-"use client";
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { restaurant } from "@/lib/restaurant";
 
 const faqs = [
@@ -33,17 +25,18 @@ const faqs = [
 
 export function FaqList() {
   return (
-    <Accordion className="w-full">
+    <div className="w-full divide-y divide-primary/15 border-y border-primary/15">
       {faqs.map((item) => (
-        <AccordionItem key={item.q} value={item.q} className="border-primary/15">
-          <AccordionTrigger className="py-4 text-left font-heading text-lg text-foreground hover:no-underline hover:text-primary">
-            {item.q}
-          </AccordionTrigger>
-          <AccordionContent className="text-muted-foreground leading-relaxed">
-            {item.a}
-          </AccordionContent>
-        </AccordionItem>
+        <details key={item.q} className="group py-2">
+          <summary className="cursor-pointer list-none py-3 font-heading text-lg text-foreground marker:content-none hover:text-primary [&::-webkit-details-marker]:hidden">
+            <span className="flex items-start justify-between gap-4">
+              {item.q}
+              <span className="mt-1 text-primary transition group-open:rotate-45">+</span>
+            </span>
+          </summary>
+          <p className="pb-4 text-sm leading-relaxed text-muted-foreground">{item.a}</p>
+        </details>
       ))}
-    </Accordion>
+    </div>
   );
 }

@@ -8,7 +8,12 @@ export const metadata: Metadata = {
   description: `South Indian menu at Raya — biryani, dosa, Chettinad gravies, combos, and more. ${restaurant.address.line1}, Dublin, CA.`,
 };
 
-export default function MenuPage() {
+export default async function MenuPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ diet?: string }>;
+}) {
+  const { diet } = await searchParams;
   return (
     <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
       <div className="max-w-2xl">
@@ -23,7 +28,7 @@ export default function MenuPage() {
         </div>
       </div>
       <div className="mt-12">
-        <MenuBrowser />
+        <MenuBrowser diet={diet} />
       </div>
     </div>
   );

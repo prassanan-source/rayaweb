@@ -1,6 +1,4 @@
-"use client";
-
-import { useMemo, useState } from "react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { formatPrice, menuCategories, type Dietary } from "@/lib/menu";
@@ -14,27 +12,25 @@ const filters: { id: "all" | Dietary; label: string }[] = [
   { id: "egg", label: "Egg" },
 ];
 
-export function MenuBrowser() {
-  const [filter, setFilter] = useState<(typeof filters)[number]["id"]>("all");
-
-  const categories = useMemo(() => {
-    if (filter === "all") return menuCategories;
-    return menuCategories
-      .map((category) => ({
-        ...category,
-        items: category.items.filter((item) => item.dietary === filter),
-      }))
-      .filter((category) => category.items.length > 0);
-  }, [filter]);
+export function MenuBrowser({ diet = "all" }: { diet?: string }) {
+  const filter = filters.some((item) => item.id === diet) ? diet : "all";
+  const categories =
+    filter === "all"
+      ? menuCategories
+      : menuCategories
+          .map((category) => ({
+            ...category,
+            items: category.items.filter((item) => item.dietary === filter),
+          }))
+          .filter((category) => category.items.length > 0);
 
   return (
     <div>
       <div className="mb-8 flex flex-wrap gap-2">
         {filters.map((item) => (
-          <button
+          <Link
             key={item.id}
-            type="button"
-            onClick={() => setFilter(item.id)}
+            href={item.id === "all" ? "/menu" : `/menu?diet=${item.id}`}
             className={cn(
               "rounded-full border px-3.5 py-1.5 text-xs tracking-wide uppercase transition-colors",
               filter === item.id
@@ -43,7 +39,7 @@ export function MenuBrowser() {
             )}
           >
             {item.label}
-          </button>
+          </Link>
         ))}
       </div>
 
@@ -73,7 +69,10 @@ export function MenuBrowser() {
               </div>
               <ul className="divide-y divide-primary/10 border-y border-primary/10">
                 {category.items.map((item) => (
-                  <li key={item.name} className="flex flex-col gap-3 py-5 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
+                  <li
+                    key={item.name}
+                    className="flex flex-col gap-3 py-5 sm:flex-row sm:items-start sm:justify-between sm:gap-8"
+                  >
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
                         <h3 className="font-medium tracking-wide text-foreground">{item.name}</h3>

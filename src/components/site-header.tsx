@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { restaurant, toastOrderUrl } from "@/lib/restaurant";
 import { CartButton } from "@/components/cart-button";
@@ -19,7 +18,6 @@ const links = [
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 border-b border-primary/15 bg-background/80 backdrop-blur-md">
@@ -63,41 +61,41 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <CartButton />
-          <button
-            type="button"
-            className={cn(buttonVariants({ variant: "outline", size: "icon" }), "md:hidden")}
-            aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => setOpen((value) => !value)}
-          >
-            {open ? <X /> : <Menu />}
-          </button>
+          <details className="relative md:hidden">
+            <summary
+              className={cn(
+                buttonVariants({ variant: "outline", size: "icon" }),
+                "cursor-pointer list-none [&::-webkit-details-marker]:hidden"
+              )}
+              aria-label="Open menu"
+            >
+              <Menu />
+            </summary>
+            <nav className="absolute right-0 z-50 mt-2 w-56 rounded-xl border border-primary/15 bg-background p-2 shadow-xl">
+              {links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "block rounded-lg px-3 py-3 text-base",
+                    pathname === link.href ? "bg-muted text-primary" : "text-foreground"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <a
+                href={toastOrderUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(buttonVariants({ size: "lg" }), "mt-2 h-11 w-full justify-center")}
+              >
+                Order on Toast
+              </a>
+            </nav>
+          </details>
         </div>
       </div>
-      {open ? (
-        <nav className="border-t border-primary/15 bg-background px-4 py-3 md:hidden">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              className={cn(
-                "block rounded-lg px-3 py-3 text-base",
-                pathname === link.href ? "bg-muted text-primary" : "text-foreground"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <a
-            href={toastOrderUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(buttonVariants({ size: "lg" }), "mt-2 h-12 w-full justify-center")}
-          >
-            Order on Toast
-          </a>
-        </nav>
-      ) : null}
     </header>
   );
 }
