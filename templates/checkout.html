@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Checkout | Raya Dublin{% endblock %}
+{% block content %}
+<div class="wrap page">
+  <p class="eyebrow">Toast kitchen</p>
+  <h1>Checkout</h1>
+  <p class="lede muted">Place order posts this bag to Toast for Raya — 7150 Village Pkwy. If Toast does not accept and store the ticket, you will not get an RY number and the restaurant will not see an order.</p>
+
+  {% if not bag_lines %}
+    <p class="empty">Your bag is empty. Add dishes on the menu, then return here to send them to Toast.</p>
+    <p><a class="btn" href="{{ url_for('main.menu') }}">Browse the menu</a></p>
+  {% else %}
+  <form class="checkout" method="post" action="{{ url_for('main.place_order') }}">
+    <div class="stack">
+      <fieldset>
+        <legend>How you’ll get it</legend>
+        <div class="chips">
+          <label class="chip {% if dining != 'delivery' %}on{% endif %}">
+            <input type="radio" name="diningOption" value="pickup" {% if dining != 'delivery' %}checked{% endif %}> Pickup
+          </label>
+          <label class="chip {% if dining == 'delivery' %}on{% endif %}">
+            <input type="radio" name="diningOption" value="delivery" {% if dining == 'delivery' %}checked{% endif %}> Delivery
+          </label>
+        </div>
+        <p class="muted pickup-note">Pick up at {{ formatted_address }}.</p>
+      </fieldset>
+
+      <fieldset class="form-grid">
+        <legend>Guest</legend>
+        <label>First name <input name="firstName" required></label>
+        <label>Last name <input name="lastName" required></label>
+        <label>Phone <input name="phone" type="tel" required autocomplete="tel"></label>
+        <label>Email <input name="email" type="email" required autocomplete="email"></label>
+      </fieldset>
+
+      <fieldset class="form-grid delivery-fields">
+        <legend>Delivery address</legend>
+        <label class="span-2">Street <input name="address1"></label>
+        <label class="span-2">Apt / suite <input name="address2"></label>
+        <label>City <input name="city"></label>
+        <label>State <input name="state" value="CA"></label>
+        <label>ZIP <input name="zipCode"></label>
+      </fieldset>
+
+      <label>Kitchen notes
+        <textarea name="notes" placeholder="Spice level, allergies, extra raita…"></textarea>
+      </label>
+    </div>
+
+    <aside class="panel ticket">
+      <h2>Ticket</h2>
+      <ul class="ticket-lines">
+        {% for line in bag_lines %}
+        <li>
+          <span>{{ line.quantity }} × {{ line.name }}</span>
+          <span>{{ format_price(line.price * line.quantity) }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      <p class="row-between"><span>Subtotal</span><span class="gold">{{ format_price(bag_subtotal) }}</span></p>
+      <p class="muted small">We do not invent an order number here. The ticket is posted to Toast for 7150 Village Pkwy; only if Toast stores the order and returns a check number do we show RY-xxxx.</p>
+      <button class="btn btn-block" type="submit">Place order</button>
+      <p class="muted small"><a href="{{ toast_order_url(dining) }}" target="_blank" rel="noopener noreferrer">Finish on Toast instead</a></p>
+    </aside>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}

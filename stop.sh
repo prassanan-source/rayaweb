@@ -8,8 +8,8 @@ if command -v lsof >/dev/null 2>&1; then
     killed=1
   fi
 fi
-pkill -f "next dev --hostname 0.0.0.0 --port 43127" 2>/dev/null && killed=1 || true
-pkill -f "next start --hostname 0.0.0.0 --port 43127" 2>/dev/null && killed=1 || true
+pkill -f "flask --app raya run" 2>/dev/null && killed=1 || true
+pkill -f "gunicorn.*wsgi:app" 2>/dev/null && killed=1 || true
 if [ "$killed" -eq 1 ]; then
   echo "Stopped Raya (port 43127)."
 else

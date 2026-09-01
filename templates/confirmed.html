@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Order status | Raya Dublin{% endblock %}
+{% block content %}
+<div class="wrap page center">
+  {% if ok %}
+    <p class="eyebrow">Toast confirmed</p>
+    <h1>Order placed!</h1>
+    <p>Your order is live in our kitchen.</p>
+    <p class="muted">Pick up at {{ formatted_address }}</p>
+    <p class="ticket-number">{{ display_number }}</p>
+    <p class="muted small">Check number from Toast · {{ restaurant.toast.location_name }}</p>
+    <p><a class="btn btn-ghost" href="{{ url_for('main.menu') }}">Back to menu</a></p>
+  {% else %}
+    <p class="eyebrow danger">Not in the kitchen</p>
+    <h1>{{ title }}</h1>
+    <p class="muted">{{ body }}</p>
+    <p><a href="{{ restaurant.phone_href }}">{{ restaurant.phone }}</a></p>
+    <p><a class="btn btn-ghost" href="{{ url_for('main.checkout') }}">Return to checkout</a></p>
+  {% endif %}
+</div>
+{% endblock %}

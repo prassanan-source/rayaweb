@@ -1,6 +1,8 @@
-# Raya — South Indian restaurant site
+# Raya — South Indian restaurant site (Flask)
 
-Website for **Raya** at 7150 Village Pkwy, Dublin, CA. Intended host: [rayaweb.hemashaninc.com](https://rayaweb.hemashaninc.com). On the server this project lives at `/home/hemashan/rayaweb`.
+Python / Flask website for **Raya** at 7150 Village Pkwy, Dublin, CA. Intended host: [rayaweb.hemashaninc.com](https://rayaweb.hemashaninc.com). On the server this project lives at `/home/hemashan/rayaweb`.
+
+This is **not** a Node.js app. Run it with Python 3 and Flask.
 
 Kitchen tickets go to Toast for **Raya - 7150 Village Pkwy** (`82a7a0d7-cf2d-4563-b767-0ea0622c5e2f`).
 
@@ -21,24 +23,24 @@ If Toast rejects the POST, or GET cannot load the order, the guest sees an error
 
 ## Run locally
 
-You need **Node.js 22** (includes `npm`). If the terminal says `npm: command not found`, install Node first — see `START-STOP.txt` or run `./install-node.sh`.
+You need **Python 3.12+**. If the terminal says `python3: command not found`, install Python first — see `START-STOP.txt` or run `./install-python.sh`.
 
 ```bash
-# Linux / macOS, if npm is missing:
-./install-node.sh
-
-npm install
-cp .env.example .env.local
+python3 -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env
 # fill TOAST_CLIENT_ID and TOAST_CLIENT_SECRET
-npm run dev
+python -m flask --app raya run --host 0.0.0.0 --port 43127
 ```
+
+Or `./start.sh` (Linux/macOS) / `start.bat` (Windows).
 
 The app listens on [http://127.0.0.1:43127](http://127.0.0.1:43127).
 
 ```bash
-npm test
-npm run build
-npm start
+source .venv/bin/activate
+pytest
 ```
 
 ## Toast
@@ -50,7 +52,7 @@ npm start
 | Branded ordering | `https://order.toasttab.com/online/raya-7150-village-pkwy` |
 | API host | `https://ws-api.toasttab.com` |
 
-Needed in `.env.local` for on-site checkout to reach the POS:
+Needed in `.env` for on-site checkout to reach the POS:
 
 ```
 TOAST_CLIENT_ID=
@@ -63,16 +65,17 @@ Create those credentials in Toast Web (Manage integrations) with `orders.orders:
 
 ## Deploy to the server
 
-Copy the repo to `/home/hemashan/rayaweb`, then:
+Copy the project to `/home/hemashan/rayaweb`, then:
 
 ```bash
 cd /home/hemashan/rayaweb
-npm ci
-npm run build
-PORT=43127 npm start
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+gunicorn --bind 0.0.0.0:43127 wsgi:app
 ```
 
-Point nginx for `rayaweb.hemashaninc.com` at that Node process.
+Point nginx for `rayaweb.hemashaninc.com` at that process.
 
 ## Contact (restaurant)
 

@@ -1,0 +1,332 @@
+# PT Bank Raya Indonesia Tbk. (PT Bank Raya Indonesia Tbk)
+
+PT Bank Raya Indonesia Tbk. is a Banking company. Bank Raya is a digital bank part of the bri group that provides solutions for various industries. PT Bank Raya Indonesia Tbk. employs 742 people (+6.9% YoY, +78 people), founded in 1989. Headquartered in Jakarta Selatan, DKI Jakarta, Indonesia, with presence in United States. Its workforce is distributed across Indonesia and Malaysia.
+
+## About
+
+PT Bank Raya Indonesia Tbk was founded by the Plantation Pension Fund (Dapenbun) on 27th September 1989 under the name PT Bank AGRO. On 11 December 1989, BRI Agro acquired a business license from the Minister of Finance and launched commercial operations on 8 February 1990.
+In 2003, the Bank took a new degree in its journey by becoming a Public Company after having made an initial public offering on the Surabaya Stock Exchange. At the same time, the Bank changed its name to PT Bank Agroniaga Tbk. In 2007, the Bank’s shares with the AGRO stock code had been listed on the Indonesia Stock Exchange. In 2006, Bank AGRO upgraded its rank to a Foreign Exchange Commercial Bank.
+
+On 3 March 2011, the Deed of Acquisition of Shares of PT Bank Agroniaga Tbk was signed between PT Bank Rakyat Indonesia (Persero) Tbk (BRI) and Dapenbun in Jakarta. In 2012, BRI had officially become the Controlling Shareholder of PT Bank Agroniaga Tbk alongside its 23rd birthday, Bank AGRO changed its name to PT Bank Rakyat Indonesia Agroniaga Tbk, with the commercial name BRI Agro.
+
+BRI Agro has increasingly taken steps with BRI to serve digital ecosystem by launched it's first digital loan called PINANG on 2019. To demonstrate its seriousness, the Company continues to synergize with BRI.
+
+Since 2021, Bank Raya has transformed into a Digital Bank as appointed by BRI as the Main Digital Bank that Provides Digital Financial Solutions with the Widest Access for the Indonesian People.
+
+## Company Details
+- Industry: Banking
+- Type: Public Company
+- Headquarters: Jakarta Selatan, Indonesia
+- Founded Year: 1989
+- Homepage: bankraya.co.id
+- Status: active
+- Aliases: pt bank raya indonesia tbk., bank raya, pt bank raya indonesia tbk
+- LinkedIn: linkedin.com/company/pt-bank-raya-indonesia-tbk
+- Linkedin Followers: 89,382 (Monthly: +1.5%, Yearly: +32.2%)
+- Emails: humas@bankraya.co.id
+- Phone: 021 79199980
+
+## Workforce
+- Employees: 742 (501-1000 employees)
+  - Monthly Growth: +0.6%
+  - Yearly Growth: +6.9%
+- Key Executives:
+  - Yosua Pangihutan Sagala: Group Head of IT Strategy
+  - ronal romambang: Vice President Regional Business Office
+  - Siska Kumala: Head of Enterprise Risk & Portfolio Risk Management & ESG
+  - Muhamad Sidik Heruwibowo: President Commisioner
+  - CLDM Ginza Angelia CHRP: Vice President Human Capital Service & Operation
+  - Muchamad Surya Prasetyo: Vice President Operational Excellence Digital Operation
+  - Tabita Ninik Murniati: Head of Unit Anti Money Laundering
+  - Albert Soebianto: Head of Digital Collection
+  - Andre Rianda: Group Head of Corporate Communication and Branding
+  - Betari Putri: Group Head Product Partnership
+- Recent Departures:
+  - Doni Arzinal: Division Head (left Mar 2026)
+  - Septian Librianto: Interim Head of IT Service & Monitoring (left Feb 2026)
+  - anggia agrimiradj: Vice President (left Mar 2026)
+  - Rara Dita Pangestika: Group Head CISO (left Feb 2026)
+- Breakdown:
+  - By Country: Indonesia: 741 (61%), Malaysia: 1
+  - By Department: Finance: 198 (16%), Technical: 172 (14%), Operations: 54 (4%), General Management: 49 (4%), Other Department: 47 (4%), Customer Service: 42 (3%), Administrative: 36 (3%), Product: 35 (3%), Sales: 26 (2%), Hr: 22 (2%) (+8 more)
+  - By Seniority: Specialist: 366 (30%), Manager: 181 (15%), Other Management: 110 (9%), Head: 51 (4%), Senior: 19 (2%), Vp: 19 (2%), Intern: 15 (1%), C-Level: 2, Director: 1
+- Talent Sources: PT Bank Central Asia Tbk (BCA) (10), Telkom Indonesia (15), PT. BANK NEGARA INDONESIA (Persero) Tbk. (18), PT. Pro Sistimatika Automasi (PROSIA) (7), PT Bank Mandiri (Persero) Tbk. (27), PT. Pegadaian (7), PT Asuransi BRI Life (9), PT Xsis Mitra Utama (8), PT Bank Rakyat Indonesia (Persero) Tbk (188), PT. Prima Karya Sarana Sejahtera (Grup BRI) (7)
+- Alumni Go To: PT. Sharing Vision Indonesia (5), PT Bank Mandiri (Persero) Tbk. (8), PT. BANK NEGARA INDONESIA (Persero) Tbk. (5), CIMB Niaga (5), PT. Pegadaian (6), Bank Mega (6), Gizalab (6), PT BANK JTRUST INDONESIA Tbk. (6), Otoritas Jasa Keuangan (5), PT Bank Rakyat Indonesia (Persero) Tbk (47)
+- Active Job Postings: 2
+  - Job Posting Trends: Monthly: +0.0%, Quarterly: +100.0%, Yearly: +100.0%
+
+### Open Positions (showing 2)
+- Junior Relationship Manager
+- Junior Relationship Manager
+
+## Products & Technology
+- Features: Mobile App
+- Tech Stack (showing 50 of 123): google api, microservices, sonarqube, graphql, idx, nodejs, json, pytest, flutter, rabbitmq, appium, microsoft, lambdatest, google cloud platform, gitlab, python, ada, restify, apache, google bigquery, typescript, javascript, postgresql, firebase, whatsapp, apache spark, jira, apache jmeter, selenium, jupyter, jupyter notebook, php, robot framework, microsoft excel, jira service management, redis, f5, matplotlib, laravel, skai, fortinet, sql, confluence, fintech, microsoft office, appsflyer, google data studio, java, html, grafana
+
+## Web Presence
+- Monthly Visits: 178,571
+  - Traffic Growth: Monthly: -26.9%, Yearly: +122.1%
+- Global Rank: #166,341
+- Bounce Rate: 0.3%
+- Pages per Visit: 10.1
+- Top Countries: Indonesia: 99%, Cambodia: 0%, United States: 0%, Singapore: 0%, Japan: 0%
+
+## Reviews & Ratings
+- Employer Rating: 3.5/5.0 (24 reviews)
+  - Breakdown: Work-Life: 3.3, Compensation: 3.2, Culture: 3.1, Career: 2.6
+
+## Categories
+banking, bank, digital, solutions, products, bri group, finance, financial services
+
+## Locations (2 offices across 2 countries)
+- United States (1 office)
+  - Menara BRILiaN, Jl. Gatot Subroto No. 177A, Menteng Dalam, Tebet, Jakarta Selatan, DKI Jakarta 12870, ID (HQ)
+- Indonesia (1 office)
+  - Jakarta, Jakarta Raya, Indonesia
+
+## Recent News
+- [2026-06-21] Kompasiana.com: Maraknya Transaksi Tanpa Uang Tunai, Apakah Sesuai dengan Prinsip Dasar Muamalah - Kompasiana.com
+- [2026-06-20]
+  - MediaKompeten: Bank Raya Gelar Lelang Raya Poin untuk Dorong Transaksi Digital
+  - viv.co.id: Bank Raya Gelar Lelang Raya Poin untuk Dongkrak Transaksi Digital
+  - AsatuNews.co.id: Bank Raya Dorong Adopsi Perbankan Digital Lewat Program Lelang Raya Poin
+  - viv.co.id: Bank Raya Pacu Transaksi Digital Lewat Lelang Raya Poin hingga 2027
+- [2026-06-19]
+  - ANALISNEWS: Bank Raya Gelar Lelang Raya Poin, Dorong Aktivitas Transaksi di Aplikasi Raya
+  - SWA.co.id: Bank Raya Menggenjot Transaksi Digital
+- [2026-06-18]
+  - Koran Manado: Bank Raya Perkuat Ekosistem Digital Lewat Lelang Raya Poin
+  - MediaKompeten: Bank Raya Luncurkan Lelang Raya Poin Guna Dongkrak Transaksi Digital
+- [2026-06-15] Koran Manado: Kredit Digital Bank Raya Tumbuh 29 Persen hingga Kuartal I 2026
+- [2026-06-10]
+  - Readers.id: Bank Raya Genjot Kredit Digital Hingga Rp8,14 Triliun
+  - Pojok Papua: Bank Raya Bersiap Naik Kelas ke KBMI 2
+  - beritakini.co.id: Bank Raya Cetak Laba Rp 6,79 Miliar di Kuartal I/2026
+  - kontan.co.id: Begini Kata Bos Bank Raya (AGRO) Soal Potensi Naik Kelas KBMI
+  - MediaKompeten: Bank Raya Cetak Laba Bersih Rp6,79 Miliar Kuartal I 2026
+  - SWA.co.id: Manjakan Fans K-Pop, Bank Raya (AGRO) Tebar Cashback dan Inklusi Keuangan Digital di Blok M
+  - MSN: Bank Raya (AGRO) andalkan CASA hadapi dampak kenaikan BI rate ke 5,5%
+  - ANALISNEWS: Bank Raya (AGRO) Tegaskan Optimisme Pertumbuhan Bisnis Digital di Public Expose Live 2026
+  - MediaKompeten: Bank Raya Genjot Kinerja Melalui Penyaluran Kredit Digital
+  - Koran Manado: Bank Raya Dorong Pertumbuhan Pengguna Lewat Inovasi Fitur Digital
+
+## Social
+
+### Linkedin
+
+- [2026-08-18 · Posted · 719 reactions] [Hai, Kawan Raya! Your next big opportunity starts here! 🚀 BFLP Bank...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_bankraya-bankdigitalpilihanmu-mudahkayaraya-activity-7495366241365266432-jcq1)
+  > Hai, Kawan Raya!
+  >
+  > Your next big opportunity starts here! 🚀
+  >
+  > BFLP Bank Raya Batch 10 resmi dibuka!
+  > Saatnya jadi bagian dari the next generation of leaders yang siap bertumbuh, mengambil tantangan, dan create meaningful impact bersama Bank Raya.
+  >
+  > Yuk, daftarkan diri kamu lewat link di bawah ini ya!
+  > 🔗https://lnkd.in/g74As65c
+  >
+  > Bersama Bank Raya, bertumbuh untuk berkarya dan Memberi Makna Indonesia.
+  >
+  > #BankRaya #BankDigitalPilihanmu #MudahKayaRaya #RayakanHidupmu #LifeAtBankRaya #EmployerBranding #BFLPBankRaya #BRIGroup
+
+- [2026-08-14 · Posted · 30 reactions] [Hai, Kawan Raya! Udah siap jadi bagian dari the next generation of...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_bankraya-bankdigitalpilihanmu-mudahkayaraya-activity-7493835772085555202-lkUY)
+  > Hai, Kawan Raya!
+  >
+  > Udah siap jadi bagian dari the next generation of leaders belum? 😎
+  >
+  > BFLP Bank Raya Batch 10 sebentar lagi hadir untuk kamu yang siap bertumbuh, mengambil tantangan, dan membuat impact lebih besar. Yuk, siapkan diri kamu, asah potensi dan jangan ketinggalan saat kesempatannya tiba ya!
+  >
+  > Pssstt… terus pantengin dan follow sosial media Bank Raya untuk tahu update soal BFLP Bank Raya Batch 10 🥳✨
+  >
+  > #BankRaya #BankDigitalPilihanmu #MudahKayaRaya #RayakanHidupmu #LifeAtBankRaya #EmployerBranding #BFLPBankRayaBatch10
+
+- [2026-07-31 · Posted · 68 reactions] [Hai, Kawan Raya! Kamu punya semangat untuk membangun relasi...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_bankraya-bankdigitalpilihanmu-mudahkayaraya-activity-7488780458718064641-PG3T)
+  > Hai, Kawan Raya!
+  >
+  > Kamu punya semangat untuk membangun relasi, menyukai dunia perbankan dan ingin berkembang bersama tim yang agile? Ini saatnya mengambil langkah berikutnya dalam perjalanan kariermu.
+  >
+  > Sebagai Junior Relationship Manager di Bank Raya, kamu akan berperan dalam membangun hubungan dengan nasabah, memahami kebutuhan dan menghadirkan solusi keuangan digital yang relevan.
+  >
+  > Yuk scan QR Code di atas dan jadi bagian dari Bank Raya!
+  >
+  > #BankRaya #BankDigitalPilihanmu #MudahKayaRaya #CareerOpportunity #LifeAtBankRaya
+
+- [2026-07-31 · Posted · 16 reactions] [Hai, Kawan Raya! ⁣ ⁣Perjalanan transformasi digital Bank Raya terus...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_bankraya-mudahkayaraya-bankdigital-activity-7488845768867581953-jEl-)
+  > Hai, Kawan Raya! ⁣
+  > ⁣Perjalanan transformasi digital Bank Raya terus berlanjut, dengan mengedepankan inovasi dan sinergi bersama ekosistem BRI Group, Bank Raya terus memperkuat pertumbuhan bisnis digital sekaligus menghadirkan pengalaman perbankan yang semakin relevan dengan kebutuhan nasabah.⁣
+  > ⁣
+  > Di tengah gaya hidup yang makin digital, kami percaya masih banyak ruang untuk terus tumbuh, berinovasi, dan memberikan solusi perbankan yang lebih mudah bagi Kawan Raya.⁣
+  > ⁣
+  > Karena bagi Bank Raya, transformasi bukan sekadar tentang menjadi Bank Digital, tapi tentang terus berkembang bersama kebutuhan Kawan Raya. ⁣
+  > ⁣
+  > #BankRaya #MudahKayaRaya #BankDigital #KinerjaQ22026
+
+- [2026-07-22 · Posted · 13 reactions] [Hai, Kawan Raya! Bank Raya meraih empat penghargaan bergengsi...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_bankraya-rayakanhidupmu-bankdigital-activity-7485498856076607490-CDop)
+  > Hai, Kawan Raya!
+  > Bank Raya meraih empat penghargaan bergengsi sekaligus di bulan Juni–Juli 2026 menjadi bukti komitmen Bank Raya untuk terus menghadirkan layanan yang lebih baik.
+  > Terima kasih atas kepercayaan Kawan Raya. Pencapaian ini menjadi semangat bagi kami untuk terus berinovasi, memberikan layanan yang memenuhi harapan, dan menghadirkan solusi keuangan digital yang semakin relevan bagi masyarakat.
+  >
+  > #BankRaya #RayakanHidupmu #BankDigital #MudahKayaRaya
+
+- [2026-07-17 · Posted · 3 reactions] [Hai, Kawan Raya! Ternyata kita selalu punya pilihan untuk mencoba...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_say-no-to-the-wrong-mindset-activity-7483822523667607552-e2v4)
+  > Hai, Kawan Raya!
+  >
+  > Ternyata kita selalu punya pilihan untuk mencoba hal baru, berjalan sendiri dan selalu mencari solusi. Hal-hal kecil yang kita pilih setiap harinya sering kali membentuk cara kita untuk bertumbuh, bekerja, dan memberikan dampak.
+  >
+  > Kalau kamu, apa satu hal yang selalu kamu pilih untuk katakan YES dalam perjalanan kariermu? Dan apa satu hal yang mulai kamu katakan NO demi perkembangan dirimu?
+  >
+  > Yuk, sharing di kolom komentar ya!
+  >
+  > #BankRaya #BankDigitalPilihanmu #MudahKayaRaya #RayakanHidupmu #LifeAtBankRaya #SayNoTo #EmployerBranding
+
+- [2026-07-13 · Posted · 13 reactions] [Hai Kawan Raya! Di tengah ketatnya persaingan perbankan digital...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_bankraya-bankdigital-mudahkayaraya-activity-7482237398127640576-0opB)
+  > Hai Kawan Raya!
+  >
+  > Di tengah ketatnya persaingan perbankan digital, Bank Raya kembali membuktikan komitmennya untuk terus tumbuh dan berdampak. Bank Raya berhasil memboyong penghargaan The Social Financing Excellence Award dalam ajang Best Bank Awards 2026!
+  >
+  > Penghargaan ini menjadi bukti nyata konsistensi kami sebagai bagian dari BRI Group dalam menghadirkan solusi pembiayaan digital yang inklusif. Kami percaya bahwa setiap lapisan masyarakat terutama mereka yang belum terlayani secara optimal berhak mendapatkan akses keuangan yang mudah dan setara.
+  >
+  > Terima kasih atas kepercayaan seluruh nasabah dan mitra. Penghargaan ini adalah suntikan energi bagi kami untuk terus berinovasi dan Maju bersama Bank Raya!
+  >
+  > #BankRaya #BankDigital #MudahKayaRaya #Awards #BRIGroup
+
+- [2026-07-10 · Posted · 17 reactions] [Hai, Kawan Raya! Di tengah dinamika industri perbankan digital yang...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_bankraya-bankdigitalpilihanmu-mudahkayaraya-activity-7481292013838204928-7Y6v)
+  > Hai, Kawan Raya!
+  >
+  > Di tengah dinamika industri perbankan digital yang terus berkembang, kemampuan untuk beradaptasi dan berinovasi menjadi kunci dalam menciptakan solusi yang relevan. Di Bank Raya, inovasi bukan hanya sekadar menghasilkan ide baru, tetapi juga mengadopsi pola pikir yang empatik serta pendekatan yang terstruktur dalam menyelesaikan berbagai tantangan.
+  >
+  > Melalui Design Thinking Academy, Divisi Human Capital menghadirkan program pengembangan kompetensi yang membekali insan Bank Raya dengan kerangka kerja Design Thinking. Program ini dirancang untuk membantu peserta memahami kebutuhan pengguna, memecahkan permasalahan secara kreatif, melakukan eksperimen dengan cepat, serta memvalidasi ide guna meminimalkan risiko dalam proses pengembangan solusi.
+  >
+  > Dengan menguasai pendekatan Design Thinking, setiap insan Bank Raya diharapkan mampu menghadirkan inovasi yang memberikan nilai tambah bagi proses bisnis, meningkatkan kualitas layanan digital, dan berkontribusi dalam membangun masa depan perbankan yang semakin relevan bagi nasabah.
+  >
+  > #BankRaya #BankDigitalPilihanmu #MudahKayaRaya #RayakanHidupmu #LifeAtBankRaya
+
+- [2026-07-09 · Posted · 22 reactions] [Hai, Kawan Raya! Setiap orang membawa cerita yang berbeda dan...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_across-generations-activity-7480856254958022656-JDOY)
+  > Hai, Kawan Raya!
+  >
+  > Setiap orang membawa cerita yang berbeda dan itulah yang membuat kami terus bertumbuh.
+  >
+  > Kami percaya bahwa keragaman bukan hanya tentang perbedaan usia atau latar belakang. Keberagaman hadir dalam setiap pengalaman, cara berpikir, perspektif, hingga passion yang dibawa oleh tiap Raya Rangers.
+  >
+  > Kalau menurut kamu, keberagaman di tempat kerja paling terasa manfaatnya dalam hal apa? Yuk, share pendapatmu di kolom komentar!
+  >
+  > #BankRaya #BankDigitalPilihanmu #MudahKayaRaya #RayakanHidupmu #LifeAtBankRaya
+
+- [2026-07-06 · Posted · 10 reactions] [Hai, Kawan Raya! Kalau Anda merasakan layanan yang nyaman bareng...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_bankraya-mudahkayaraya-melayanisepenuhhati-activity-7479866161585876992-5dHi)
+  > Hai, Kawan Raya!
+  > Kalau Anda merasakan layanan yang nyaman bareng Bank Raya, sekarang saatnya berikan dukungan!
+  > Cuma butuh waktu 1 menit buat isi polling Danantara Indonesia CX100 dan vote Bank Raya sebagai bank digital pilihan Anda. Dukung kami untuk terus menghadirkan layanan yang lebih baik.
+  >
+  > Caranya mudah:
+  > 1. Klik bit.ly/RayaCX100 atau scan QR code yang tersedia di akhir video
+  > 2. Masukkan email
+  > 3. Pilih Sign in dengan Gmail (untuk pengguna Gmail) atau cek kode OTP di inbox email (untuk email lainnya)
+  > 4. Pilih sektor Jasa Keuangan, lalu Digital Banking & E-Wallet
+  > 5. Pilih maksimal 3 faktor utama yang menunjukkan keunggulan layanan
+  > 6. Pilih Bank Raya
+  >
+  > 📅 Polling dibuka hingga 18 Juli 2026
+  > 📩 Yuk vote tiap hari! Satu email bisa dipakai berulang, maksimal 1x sehari
+  >
+  > Ajak juga Kawan Raya lainnya ya!
+  >
+  > #BankRaya  #MudahKayaRaya   #MelayaniSepenuhHati  #DanantaraIndonesia  #CX100
+
+- [2026-07-03 · Posted · 14 reactions] [Hai, Kawan Raya! Baru-baru ini, Bank Raya berhasil membawa pulang...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_rayakanhidupmu-bankraya-rayakanhidupmu-activity-7478613492405522432-FngZ)
+  > Hai, Kawan Raya!
+  > Baru-baru ini, Bank Raya berhasil membawa pulang tiga penghargaan bergengsi sekaligus. Pencapaian ini kita Rayakan untuk Kawan Raya semua!
+  >
+  > 🏆The 2nd Best Digital Bank in Opening Account via Mobile Experience dan
+  > 🏆The 3rd Best Digital Bank in Customer Experience dari Infobank
+  > 🏆7th Top Bank Awards 2026 kategori KBMI 1 dari The Iconomics
+  >
+  > Tiga penghargaan ini jadi bukti kalau Bank Raya selalu konsisten menghadirkan pengalaman perbankan digital yang membantu Kawan Raya semakin mudah atur keuangan.
+  >
+  > Mari terus #RayakanHidupmu bersama Bank Raya!
+  >
+  > #BankRaya #RayakanHidupmu #BankDigital #MudahKayaRaya #TripleAward
+
+- [2026-07-02 · Posted · 7 reactions] [Hai Kawan Raya! Bank Raya kembali menghadirkan inovasi seru lewat...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_bankdigital-mudahkayaraya-rayaactive-activity-7478265808926711808-Jj-Z)
+  > Hai Kawan Raya!
+  >
+  > Bank Raya kembali menghadirkan inovasi seru lewat Raya Active, fitur menabung yang bikin aktivitas gerak kamu jadi makin bermakna! Kini, setiap langkah, jarak tempuh, hingga kalori yang kamu bakar bisa ikut mendekatkan kamu ke tabungan impian di Aplikasi Raya.
+  >
+  > Lewat Raya Active, kamu bisa menabung secara otomatis dengan memindahkan dana dari Saku Utama ke Saku Pintar, yang terhubung langsung dengan aplikasi kesehatan seperti Health Connect di Android dan Apple Health di iOS. Semakin aktif kamu bergerak, semakin dekat juga kamu ke target tabunganmu!
+  >
+  > Jadi, bukan cuma sehat yang kamu dapat, tapi juga cuan yang terkumpul. Menabung pun jadi lebih fun, serasa punya “reward” dari setiap gerakanmu!
+  >
+  > #BankDigital #MudahKayaRaya #RayaActive #BankRaya
+
+- [2026-06-30 · Posted · 12 reactions] [Hai, Kawan Raya! Dalam menjalin kolaborasi tentunya ada proses...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_why-my-work-matters-activity-7477699801657204737-JRtP)
+  > Hai, Kawan Raya!
+  >
+  > Dalam menjalin kolaborasi tentunya ada proses panjang yang dimulai dari mendengarkan, memahami kebutuhan, hingga membangun kepercayaan.
+  >
+  > Bagi Dame, perannya di Divisi Sales & Partnership bukan hanya tentang membangun kemitraan, tetapi juga menghubungkan strategi Bank Raya dengan kebutuhan masyarakat agar setiap kolaborasi dapat memberikan manfaat yang lebih luas.
+  >
+  > #BankRaya #BankDigitalPilihanmu #MudahKayaRaya #RayakanHidupmu #LifeAtBankRaya #WhyMyWorkMatters
+
+- [2026-06-29 · Posted · 7 reactions] [Hai, Kawan Raya!⁣ Setiap pengalaman bersama Raya adalah masukan...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_hai-kawan-raya-setiap-pengalaman-bersama-activity-7477241309955633152-L8Bf)
+  > Hai, Kawan Raya!⁣
+  >
+  > Setiap pengalaman bersama Raya adalah masukan berharga bagi kami untuk terus menghadirkan layanan yang lebih baik.
+  >
+  > Sudah merasakan mudah dan cepatnya layanan Bank Raya? Cukup luangkan 1 menit untuk mengisi polling dan dukung Bank Raya di Danantara Indonesia CX100.
+  >
+  > Caranya mudah:
+  > 1. Klik bit.ly/RayaCX100 atau scan QR code yang tersedia
+  > 2. Masukkan email
+  > 3. Pilih Sign in dengan Gmail (untuk pengguna Gmail) atau cek kode OTP di inbox email (untuk email lainnya)
+  > 4. Pilih sektor Jasa Keuangan, lalu Digital Banking & E-Wallet
+  > 5. Pilih maksimal 3 faktor utama yang menunjukkan keunggulan layanan
+  > 6. Pilih Bank Raya
+  >
+  > 📅 Polling dibuka hingga 18 Juli 2026
+  > 📩 Satu email dapat berpartisipasi berulang, maksimal 1x dalam sehari
+
+- [2026-06-29 · Posted · 1 reaction] [Hai, Kawan Raya! Di era digital, pendidikan finansial sebaiknya...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_money-parenting-membangun-kebiasaan-finansial-activity-7477263487711510528-kY-Y)
+  > Hai, Kawan Raya!
+  >
+  > Di era digital, pendidikan finansial sebaiknya dimulai sejak dini melalui kebiasaan sehari-hari yang dicontohkan orang tua. Konsep money parenting mengajarkan anak untuk memahami nilai uang, menabung, dan bertanggung jawab dalam mengelola keuangan. Untuk mendukung kebiasaan tersebut, Bank Raya menghadirkan fitur Saku Anak, yang memudahkan orang tua mengenalkan pengelolaan keuangan kepada anak secara praktis, aman, dan menyenangkan sejak usia dini. Selengkapnya kamu bisa baca di artikel berikut yaa! https://lnkd.in/gmPhPhVn
+
+- [2026-06-29 · Posted · 1 reaction] [Hai, Kawan Raya!⁣ Tidak pesan paket, tiba-tiba ada pesan ngaku...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_bankraya-rayakanhidupmu-bankdigital-activity-7477284753172496386-L6Is)
+  > Hai, Kawan Raya!⁣
+  > Tidak pesan paket, tiba-tiba ada pesan ngaku kurir dan minta kamu install sesuatu, Kawan Raya hati-hati ya bisa jadi itu jebakan, kurir resmi tidak pernah meminta kamu menginstal APK dari luar aplikasi resmi. Kalau ragu, cek langsung di aplikasi atau website kurir-nya jangan klik link atau instal apapun dari pesan tak dikenal biar akunmu tetap aman! ⁣
+  > ⁣
+  > Kalau terlanjur klik, kamu bisa segera hubungi Sapa Raya di 1500 494 untuk mendapatkan bantuan.⁣
+  > ⁣
+  > ⁣
+  > #BankRaya  #RayakanHidupmu  #BankDigital #MudahKayaRaya  #KeamananDigital
+
+- [2026-06-25 · Posted · 29 reactions] [Hai, Kawan Raya! Di Bank Raya, kami percaya bahwa koneksi yang kuat...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_get-to-know-raya-communities-activity-7475755783738011648-zpzE)
+  > Hai, Kawan Raya!
+  >
+  > Di Bank Raya, kami percaya bahwa koneksi yang kuat tidak hanya dibangun melalui pekerjaan, tetapi juga melalui kesamaan minat, hobi, dan semangat untuk bertumbuh bersama.
+  >
+  > Melalui komunitas yang ada di Bank Raya, kami memiliki ruang untuk mengeksplorasi passion, memperluas hubungan lintas divisi, serta membangun kebersamaan di luar pekerjaan. Karena kami percaya, budaya kerja yang kuat lahir dari orang-orang yang saling terhubung, baik di dalam maupun di luar kantor!
+  >
+  > #BankRaya #RayakanHidupmu #MudahKayaRaya #LifeAtBankRaya #EmployerBranding #RayaCommunity
+
+- [2026-06-22 · Posted · 15 reactions] [Hai, Kawan Raya! Work matters, but well-being matters just as much...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_international-yoga-day-activity-7474757273337307137-XS3S)
+  > Hai, Kawan Raya!
+  >
+  > Work matters, but well-being matters just as much!
+  >
+  > Melalui International Yoga Day ini, Bank Raya kembali mengingat bahwa ruang untuk bergerak, bernapas, dan menenangkan diri adalah bagian penting dari perjalanan bekerja dan bertumbuh.
+  >
+  > Sejalan dengan semangat itu, komunitas Raya Fit & Fun terus mendorong budaya kerja yang lebih sehat, mindful, dan berkelanjutan!
+  >
+  > #BankRaya #RayakanHidupmu #MudahKayaRaya #LifeAtBankRaya #EmployerBranding #InternationalYogaDay2026
+
+- [2026-06-22 · 9 reactions] Hai, Kawan Raya! Work matters, but well-being matters just as much! Melalui International Yoga Day ini, Bank Raya kembali mengingat bahwa ruang untuk bergerak, bernapas, dan menenangkan diri adalah...
+
+- [2026-06-18 · Posted · 10 reactions] [Hai, Kawan Raya! Mulai dari mengeksplor peluang, mengelola...](https://www.linkedin.com/posts/pt-bank-raya-indonesia-tbk_udah-siap-belum-activity-7473315926222786561-iXHU)
+  > Hai, Kawan Raya!
+  >
+  > Mulai dari mengeksplor peluang, mengelola prioritas, mengembangkan kompetensi, hingga berani mengambil tantangan di luar rutinitas. Semua proses tersebut menjadi bekal untuk terus bertumbuh dan mempersiapkan diri menghadapi berbagai peluang di masa depan.
+  >
+  > Karena berkembang bukan tentang siapa yang paling cepat melangkah, melainkan tentang siapa yang terus mau belajar, beradaptasi, dan mengambil inisiatif untuk menjadi versi terbaik dari dirinya.
+  >
+  > Yuk, mulai langkahmu hari ini dan terus jadi #OneStepAhead dalam perjalanan kariermu. 🚀
+  >
+  > #BankRaya #RayakanHidupmu #MudahKayaRaya #LifeAtBankRaya #EmployerBranding

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Page not found | Raya Dublin{% endblock %}
+{% block content %}
+<div class="wrap page center">
+  <p class="eyebrow">404</p>
+  <h1>That page is not on the menu</h1>
+  <p class="muted">Try the home page, the menu, or call us if you were looking for an order.</p>
+  <div class="row center-row">
+    <a class="btn" href="{{ url_for('main.home') }}">Home</a>
+    <a class="btn btn-ghost" href="{{ url_for('main.menu') }}">Menu</a>
+  </div>
+</div>
+{% endblock %}
