@@ -1,84 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useActionState, useState } from "react";
+import { placeOrderAction } from "@/app/actions/order";
 import { useCart } from "@/components/cart-provider";
 import { buttonVariants } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { clearCartAction } from "@/app/actions/cart";
 import { formatPrice } from "@/lib/menu";
 import { formattedAddress, toastOrderUrl } from "@/lib/restaurant";
 import type { DiningMode, PlaceOrderResult } from "@/lib/toast/types";
 import { cn } from "@/lib/utils";
 
+const initialState: PlaceOrderResult | null = null;
+
 export function CheckoutForm() {
-  const router = useRouter();
-  const { lines, subtotal, clear } = useCart();
+  const { lines, subtotal } = useCart();
   const [diningOption, setDiningOption] = useState<DiningMode>("pickup");
-  const [error, setError] = useState<string | null>(null);
-  const [pending, setPending] = useState(false);
-
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError(null);
-
-    if (!lines.length) {
-      setError("Add dishes from the menu before checking out.");
-      return;
-    }
-
-    const form = new FormData(event.currentTarget);
-    setPending(true);
-
-    try {
-      const response = await fetch("/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          diningOption,
-          guest: {
-            firstName: String(form.get("firstName") ?? ""),
-            lastName: String(form.get("lastName") ?? ""),
-            phone: String(form.get("phone") ?? ""),
-            email: String(form.get("email") ?? ""),
-          },
-          notes: String(form.get("notes") ?? ""),
-          lines: lines.map((line) => ({
-            itemId: line.itemId,
-            name: line.name,
-            quantity: line.quantity,
-          })),
-          delivery:
-            diningOption === "delivery"
-              ? {
-                  address1: String(form.get("address1") ?? ""),
-                  address2: String(form.get("address2") ?? ""),
-                  city: String(form.get("city") ?? ""),
-                  state: String(form.get("state") ?? ""),
-                  zipCode: String(form.get("zipCode") ?? ""),
-                }
-              : undefined,
-        }),
-      });
-
-      const result = (await response.json()) as PlaceOrderResult;
-
-      if (!result.ok) {
-        setError(result.error);
-        return;
-      }
-
-      clear();
-      await clearCartAction();
-      router.push(`/order/confirmed?guid=${encodeURIComponent(result.toastGuid)}`);
-    } catch {
-      setError("Could not reach the kitchen. No order number was issued.");
-    } finally {
-      setPending(false);
-    }
-  }
+  const [state, action, pending] = useActionState(placeOrderAction, initialState);
 
   if (!lines.length) {
     return (
@@ -89,7 +26,8 @@ export function CheckoutForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+    <form action={action} className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+      <input type="hidden" name="diningOption" value={diningOption} />
       <div className="space-y-6">
         <fieldset className="grid gap-3">
           <legend className="font-heading text-2xl text-primary">How you’ll get it</legend>
@@ -137,7 +75,12 @@ export function CheckoutForm() {
 
         <div className="grid gap-2">
           <Label htmlFor="notes">Kitchen notes</Label>
-          <Textarea id="notes" name="notes" placeholder="Spice level, allergies, extra raita…" />
+          <textarea
+            id="notes"
+            name="notes"
+            placeholder="Spice level, allergies, extra raita…"
+            className="min-h-24 w-full rounded-lg border border-input bg-transparent px-2.5 py-2 text-sm"
+          />
         </div>
       </div>
 
@@ -161,9 +104,9 @@ export function CheckoutForm() {
           We do not invent an order number here. The ticket is posted to Toast for 7150 Village
           Pkwy; only if Toast stores the order and returns a check number do we show RY-xxxx.
         </p>
-        {error ? (
+        {state && !state.ok ? (
           <div className="mt-4 rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
-            <p>{error}</p>
+            <p>{state.error}</p>
             <a
               href={toastOrderUrl(diningOption)}
               className="mt-2 inline-block underline"
@@ -204,14 +147,14 @@ function Field({
   return (
     <div className="grid gap-2">
       <Label htmlFor={name}>{label}</Label>
-      <Input
+      <input
         id={name}
         name={name}
         type={type}
         required={required}
         autoComplete={autoComplete}
         defaultValue={defaultValue}
-        className="h-10"
+        className="h-10 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm"
       />
     </div>
   );
