@@ -2,16 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
 import { restaurant, toastOrderUrl } from "@/lib/restaurant";
 import { CartButton } from "@/components/cart-button";
 import { cn } from "@/lib/utils";
@@ -21,10 +14,12 @@ const links = [
   { href: "/menu", label: "Menu" },
   { href: "/order", label: "Order" },
   { href: "/visit", label: "Visit" },
+  { href: "/order/checkout", label: "Checkout" },
 ];
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 border-b border-primary/15 bg-background/80 backdrop-blur-md">
@@ -39,21 +34,23 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">
-          {links.map((link) => {
-            const active = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "text-sm tracking-wide uppercase transition-colors",
-                  active ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+          {links
+            .filter((link) => link.href !== "/order/checkout")
+            .map((link) => {
+              const active = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "text-sm tracking-wide uppercase transition-colors",
+                    active ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           <a
             href={toastOrderUrl()}
             target="_blank"
@@ -66,62 +63,41 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <CartButton />
-          <Sheet>
-            <SheetTrigger
-              render={
-                <Button variant="outline" size="icon" className="md:hidden" aria-label="Open menu" />
-              }
-            >
-              <Menu />
-            </SheetTrigger>
-            <SheetContent side="right" className="bg-background">
-              <SheetHeader>
-                <SheetTitle className="font-heading text-2xl text-primary">{restaurant.name}</SheetTitle>
-              </SheetHeader>
-              <nav className="flex flex-col gap-1 px-2">
-                {links.map((link) => (
-                  <SheetClose
-                    key={link.href}
-                    render={
-                      <Link
-                        href={link.href}
-                        className={cn(
-                          "rounded-lg px-3 py-3 text-base",
-                          pathname === link.href ? "bg-muted text-primary" : "text-foreground"
-                        )}
-                      />
-                    }
-                  >
-                    {link.label}
-                  </SheetClose>
-                ))}
-                <SheetClose
-                  render={
-                    <Link
-                      href="/order/checkout"
-                      className="rounded-lg px-3 py-3 text-base"
-                    />
-                  }
-                >
-                  Checkout
-                </SheetClose>
-                <SheetClose
-                  render={
-                    <a
-                      href={toastOrderUrl()}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(buttonVariants({ size: "lg" }), "mt-4 h-12 justify-center")}
-                    />
-                  }
-                >
-                  Order on Toast
-                </SheetClose>
-              </nav>
-            </SheetContent>
-          </Sheet>
+          <button
+            type="button"
+            className={cn(buttonVariants({ variant: "outline", size: "icon" }), "md:hidden")}
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((value) => !value)}
+          >
+            {open ? <X /> : <Menu />}
+          </button>
         </div>
       </div>
+      {open ? (
+        <nav className="border-t border-primary/15 bg-background px-4 py-3 md:hidden">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setOpen(false)}
+              className={cn(
+                "block rounded-lg px-3 py-3 text-base",
+                pathname === link.href ? "bg-muted text-primary" : "text-foreground"
+              )}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <a
+            href={toastOrderUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(buttonVariants({ size: "lg" }), "mt-2 h-12 w-full justify-center")}
+          >
+            Order on Toast
+          </a>
+        </nav>
+      ) : null}
     </header>
   );
 }
