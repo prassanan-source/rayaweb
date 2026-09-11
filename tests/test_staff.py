@@ -58,15 +58,11 @@ def test_submission_is_saved_before_square_is_called(tmp_path, monkeypatch):
     response = client.post(
         "/order/place",
         data={
-            "diningOption": "delivery",
+            "diningOption": "pickup",
             "firstName": "Asha",
             "lastName": "Kumar",
             "phone": "925-235-3672",
             "email": "asha@example.com",
-            "address1": "1 Main St",
-            "city": "Dublin",
-            "state": "CA",
-            "zipCode": "94568",
             "notes": "Mild",
         },
     )
@@ -78,7 +74,7 @@ def test_submission_is_saved_before_square_is_called(tmp_path, monkeypatch):
         saved = get_order(orders[0]["id"])
         assert saved["status"] == "SQUARE_ERROR"
         assert saved["first_name"] == "Asha"
-        assert saved["address1"] == "1 Main St"
+        assert saved["dining_option"] == "pickup"
         assert saved["lines"][0]["name"] == "Chicken 65"
         assert saved["subtotal_cents"] == 2798
 
@@ -93,5 +89,5 @@ def test_submission_is_saved_before_square_is_called(tmp_path, monkeypatch):
     detail = client.get(f"/staff/orders/{saved['id']}")
     assert detail.status_code == 200
     assert b"asha@example.com" in detail.data
-    assert b"1 Main St" in detail.data
+    assert b"925-235-3672" in detail.data
     assert b"Chicken 65" in detail.data

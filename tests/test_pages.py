@@ -28,25 +28,19 @@ def test_unconfigured_square_online_url_falls_back_to_web_menu(monkeypatch):
     monkeypatch.delenv("SQUARE_ORDER_URL", raising=False)
     assert square_order_url() == "/menu"
 
+    monkeypatch.setenv("SQUARE_ORDER_URL", "https://order.example.square.site/")
+    assert square_order_url("delivery") == "https://order.example.square.site"
 
-def test_delivery_checkout_shows_address_fields():
+
+def test_delivery_checkout_requires_published_square_online(monkeypatch):
+    monkeypatch.delenv("SQUARE_ORDER_URL", raising=False)
     app = create_app()
     client = app.test_client()
-    with client.session_transaction() as session:
-        session["raya_bag"] = [
-            {
-                "itemId": "chicken-65",
-                "name": "Chicken 65",
-                "price": 13.99,
-                "quantity": 1,
-            }
-        ]
 
-    response = client.get("/order/checkout?dining=delivery")
+    response = client.get("/order/checkout?dining=delivery", follow_redirects=True)
 
     assert response.status_code == 200
-    assert b'value="delivery" checked' in response.data
-    assert b'name="address1"' in response.data
+    assert b"requires a published Square Online URL" in response.data
 
 
 def test_add_to_bag_then_checkout():

@@ -86,7 +86,11 @@
   <article class="panel">
     <h3>Delivery</h3>
     <p class="muted">Delivery across {{ restaurant.service_area[:4]|join(', ') }}, and the rest of the Tri-Valley.</p>
-    <a class="btn" href="{{ url_for('main.checkout', dining='delivery') }}">Order delivery</a>
+    {% if square_online_configured %}
+      <a class="btn" href="{{ square_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Order delivery</a>
+    {% else %}
+      <a class="btn" href="{{ restaurant.phone_href }}">Call for delivery</a>
+    {% endif %}
   </article>
 </section>
 

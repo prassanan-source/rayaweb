@@ -33,7 +33,7 @@ FAQS = [
     },
     {
         "q": "Do you offer pickup and delivery?",
-        "a": "Yes. Build a pickup or delivery order here, then pay securely on Square.",
+        "a": "Yes. Build a pickup order here and pay securely on Square. On-Demand Delivery is available through our published Square Online store.",
     },
     {
         "q": "Where are you, and what areas do you deliver to?",
@@ -139,9 +139,16 @@ def order():
 @bp.get("/order/checkout")
 def checkout():
     dining = request.args.get("dining") or "pickup"
-    if dining not in {"pickup", "delivery"}:
-        dining = "pickup"
-    return render_template("checkout.html", dining=dining, **_ctx())
+    if dining == "delivery":
+        if square_online_configured():
+            return redirect(square_order_url("delivery"))
+        flash(
+            "Square On-Demand Delivery requires a published Square Online URL. "
+            "Set SQUARE_ORDER_URL after publishing the store.",
+            "error",
+        )
+        return redirect(url_for("main.order"))
+    return render_template("checkout.html", dining="pickup", **_ctx())
 
 
 @bp.post("/cart/add")
@@ -176,9 +183,7 @@ def cart_update():
 
 @bp.post("/order/place")
 def place_order():
-    dining_option = (
-        "delivery" if request.form.get("diningOption") == "delivery" else "pickup"
-    )
+    dining_option = "pickup"
     lines = [
         {
             "itemId": line["itemId"],

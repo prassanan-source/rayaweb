@@ -101,7 +101,7 @@ Square.
 
 Every customer submission is written to the local SQLite database before the
 Square API is called. It includes customer contact information, fulfillment
-type, delivery address, notes, line items, subtotal, Square IDs, and error
+type, contact details, notes, line items, subtotal, Square IDs, and error
 status. Restaurant employees can sign in at:
 
 `https://www.rayarestaurant.com/staff/login`
@@ -110,6 +110,15 @@ Both the admin and user accounts can view order details and refresh an order's
 payment status from Square. Set strong, different passwords in `.env`; no
 default password is provided. Back up the file configured by `ORDER_DB_PATH`
 because it contains customer personal information.
+
+### Square On-Demand Delivery
+
+Square's built-in third-party courier dispatch is a Square Online feature, not
+an Orders API feature. A custom API `DELIVERY` fulfillment can carry an
+address, but it does not request a DoorDash/Uber courier. Set
+`SQUARE_ORDER_URL` to the exact URL of Raya's published Square Online store;
+the site's Delivery button then opens that store, where Square collects the
+address, charges the delivery fee, and dispatches its courier.
 
 ## Deploy to the server
 

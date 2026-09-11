@@ -4,7 +4,7 @@
 <div class="wrap page">
   <p class="eyebrow">Secure Square checkout</p>
   <h1>Checkout</h1>
-  <p class="lede muted">Continue to Square to pay securely. Square sends the paid pickup or delivery order to Raya at 7150 Village Pkwy.</p>
+  <p class="lede muted">Continue to Square to pay securely. Square sends the paid pickup order to Raya at 7150 Village Pkwy.</p>
 
   {% if not bag_lines %}
     <p class="empty">Your bag is empty. Add dishes on the menu, then return here to send them to Square.</p>
@@ -15,11 +15,8 @@
       <fieldset>
         <legend>How you’ll get it</legend>
         <div class="chips">
-          <label class="chip {% if dining != 'delivery' %}on{% endif %}">
-            <input type="radio" name="diningOption" value="pickup" {% if dining != 'delivery' %}checked{% endif %}> Pickup
-          </label>
-          <label class="chip {% if dining == 'delivery' %}on{% endif %}">
-            <input type="radio" name="diningOption" value="delivery" {% if dining == 'delivery' %}checked{% endif %}> Delivery
+          <label class="chip on">
+            <input type="radio" name="diningOption" value="pickup" checked> Pickup
           </label>
         </div>
         <p class="muted pickup-note">Pick up at {{ formatted_address }}.</p>
@@ -31,15 +28,6 @@
         <label>Last name <input name="lastName" required></label>
         <label>Phone <input name="phone" type="tel" required autocomplete="tel"></label>
         <label>Email <input name="email" type="email" required autocomplete="email"></label>
-      </fieldset>
-
-      <fieldset class="form-grid delivery-fields">
-        <legend>Delivery address</legend>
-        <label class="span-2">Street <input name="address1" autocomplete="address-line1"></label>
-        <label class="span-2">Apt / suite <input name="address2" autocomplete="address-line2"></label>
-        <label>City <input name="city" autocomplete="address-level2"></label>
-        <label>State <input name="state" value="CA" autocomplete="address-level1"></label>
-        <label>ZIP <input name="zipCode" autocomplete="postal-code"></label>
       </fieldset>
 
       <label>Kitchen notes

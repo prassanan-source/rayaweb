@@ -4,16 +4,20 @@
 <div class="wrap page">
   <p class="eyebrow">Square</p>
   <h1>Order for pickup or delivery</h1>
-  <p class="lede muted">Build your pickup or delivery order here, then pay on Square’s secure checkout.</p>
+  <p class="lede muted">Build a pickup order here and pay on Square’s secure checkout. Square On-Demand Delivery is available through the published Square Online store.</p>
   <p class="muted">Online ordering {{ restaurant.hours.online_display }} · <span class="badge {% if status.open %}open{% endif %}">{{ status.label }}</span></p>
 
   <div>
     <article class="panel">
       <h2>Order on this site</h2>
-      <p class="muted">Add dishes from the menu, choose pickup or delivery, and check out securely. Your customer and order details are saved by Raya before payment starts.</p>
+      <p class="muted">Add dishes from the menu and check out securely for pickup. Your customer and order details are saved by Raya before payment starts.</p>
       <div class="row">
         <a class="btn" href="{{ url_for('main.menu') }}">Start with the menu</a>
-        <a class="btn btn-ghost" href="{{ url_for('main.checkout', dining='delivery') }}">Start delivery</a>
+        {% if square_online_configured %}
+          <a class="btn btn-ghost" href="{{ square_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Square delivery</a>
+        {% else %}
+          <a class="btn btn-ghost" href="{{ restaurant.phone_href }}">Call for delivery</a>
+        {% endif %}
       </div>
     </article>
   </div>

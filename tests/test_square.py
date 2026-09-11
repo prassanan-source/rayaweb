@@ -105,20 +105,8 @@ def test_pickup_order_is_explicitly_asap():
     assert "pickup_at" not in pickup
 
 
-def test_delivery_order_is_sent_to_square_payment():
-    square = FakeSquare(
-        posted={
-            "order_id": "square-delivery-id",
-            "url": "https://square.link/u/delivery",
-        }
-    )
-    captured = {}
-
-    def create_payment_link(order):
-        captured.update(order)
-        return square.posted
-
-    square.create_payment_link = create_payment_link
+def test_delivery_requires_square_online():
+    square = FakeSquare()
     delivery_input = {
         **INPUT,
         "diningOption": "delivery",
@@ -132,20 +120,8 @@ def test_delivery_order_is_sent_to_square_payment():
     }
     result = place_kitchen_order(delivery_input, square)
 
-    assert result["ok"] is True
-    delivery = captured["order"]["fulfillments"][0]["delivery_details"]
-    assert delivery["schedule_type"] == "ASAP"
-    assert delivery["recipient"]["address"]["postal_code"] == "94568"
-
-
-def test_delivery_requires_full_address():
-    result = place_kitchen_order(
-        {**INPUT, "diningOption": "delivery", "delivery": {}},
-        FakeSquare(),
-    )
-
     assert result["ok"] is False
-    assert result["code"] == "INVALID_GUEST"
+    assert result["code"] == "SQUARE_DELIVERY_REQUIRES_ONLINE"
 
 
 def test_only_paid_square_order_is_confirmed():
