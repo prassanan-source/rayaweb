@@ -89,6 +89,57 @@ def test_issues_ry_number_only_after_get_confirms_same_id():
     assert result["displayNumber"] == "RY-1004"
 
 
+def test_pickup_order_is_explicitly_asap():
+    square = FakeSquare(
+        posted={"id": "square-order-id"},
+        fetched={"id": "square-order-id", "ticket_name": "1004"},
+    )
+    captured = {}
+
+    def post_order(order):
+        captured.update(order)
+        return square.posted
+
+    square.post_order = post_order
+    result = place_kitchen_order(INPUT, square)
+
+    assert result["ok"] is True
+    pickup = captured["order"]["fulfillments"][0]["pickup_details"]
+    assert pickup["schedule_type"] == "ASAP"
+    assert "pickup_at" not in pickup
+
+
+def test_delivery_order_is_explicitly_asap():
+    square = FakeSquare(
+        posted={"id": "square-order-id"},
+        fetched={"id": "square-order-id", "ticket_name": "1004"},
+    )
+    captured = {}
+
+    def post_order(order):
+        captured.update(order)
+        return square.posted
+
+    square.post_order = post_order
+    delivery_input = {
+        **INPUT,
+        "diningOption": "delivery",
+        "delivery": {
+            "address1": "7150 Village Pkwy",
+            "address2": "",
+            "city": "Dublin",
+            "state": "CA",
+            "zipCode": "94568",
+        },
+    }
+    result = place_kitchen_order(delivery_input, square)
+
+    assert result["ok"] is True
+    delivery = captured["order"]["fulfillments"][0]["delivery_details"]
+    assert delivery["schedule_type"] == "ASAP"
+    assert "deliver_at" not in delivery
+
+
 def test_guest_ticket_requires_id():
     assert guest_ticket_from_square_order(None) is None
     assert guest_ticket_from_square_order({}) is None

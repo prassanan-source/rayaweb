@@ -98,6 +98,7 @@ def place_kitchen_order(inp: dict, square) -> dict:
     if fulfillment_type == "DELIVERY":
         delivery = inp["delivery"]
         fulfillment["delivery_details"] = {
+            "schedule_type": "ASAP",
             "recipient": {
                 **recipient,
                 "address": {
@@ -111,7 +112,10 @@ def place_kitchen_order(inp: dict, square) -> dict:
             }
         }
     else:
-        fulfillment["pickup_details"] = {"recipient": recipient}
+        fulfillment["pickup_details"] = {
+            "schedule_type": "ASAP",
+            "recipient": recipient,
+        }
 
     payload = {
         "idempotency_key": str(uuid.uuid4()),
