@@ -1,6 +1,6 @@
 # Raya — South Indian restaurant site (Flask)
 
-Python / Flask website for **Raya** at 7150 Village Pkwy, Dublin, CA. Intended host: [rayaweb.hemashaninc.com](https://rayaweb.hemashaninc.com). On the server this project lives at `/home/hemashan/rayaweb` (or `/rayaweb` on `rayarest@rayarestaurant.com`).
+Python / Flask website for **Raya** at 7150 Village Pkwy, Dublin, CA. Production host: [rayarestaurant.com](https://www.rayarestaurant.com). On the server this project lives at `/home/rayarest/rayaweb`.
 
 This is **not** a Node.js app. Run it with Python 3 and Flask.
 
@@ -65,17 +65,20 @@ Create those credentials in the Square Developer Dashboard with `ORDERS_WRITE`, 
 
 ## Deploy to the server
 
-Copy the project to `/home/hemashan/rayaweb` (or `/rayaweb`), then:
+SSH as `rayarest@rayarestaurant.com` and work in `/home/rayarest/rayaweb`:
 
 ```bash
-cd /home/hemashan/rayaweb
+ssh rayarest@rayarestaurant.com
+cd /home/rayarest/rayaweb
+git pull
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+# set SQUARE_ACCESS_TOKEN and SQUARE_LOCATION_ID in /home/rayarest/rayaweb/.env
 gunicorn --bind 0.0.0.0:43127 wsgi:app
 ```
 
-Point nginx for `rayaweb.hemashaninc.com` at that process.
+Point nginx for `rayarestaurant.com` at that process.
 
 ## Contact (restaurant)
 

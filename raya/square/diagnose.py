@@ -42,7 +42,7 @@ def missing_credential_message() -> str:
             f"Missing environment {noun}: {', '.join(missing) or 'unknown'}.",
             "This is not a wrong-password error and not a write-privilege error — Square was never called.",
             "",
-            "Set these in .env (local) or on the server, then restart the app:",
+            "Set these in .env (local) or /home/rayarest/rayaweb/.env (server), then restart the app:",
             credential_inventory(),
             "",
             "After they are set, a failed checkout will tell you whether the access token failed (HTTP 401) "
