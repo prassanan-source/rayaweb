@@ -262,3 +262,34 @@ def test_sync_web_menu_creates_missing_items(monkeypatch):
         "amount": 499,
         "currency": "USD",
     }
+
+
+def test_square_timeout_returns_clear_network_error(monkeypatch):
+    import requests
+
+    from raya.square import client
+    from raya.square.errors import SquareApiError
+
+    monkeypatch.setattr(
+        client,
+        "square_config",
+        lambda: {
+            "host": "https://connect.squareup.com",
+            "access_token": "token",
+            "location_id": "LOCATION",
+        },
+    )
+
+    def timeout(*_args, **_kwargs):
+        raise requests.ReadTimeout("timed out")
+
+    monkeypatch.setattr(client._session, "request", timeout)
+
+    try:
+        client._square_fetch("/v2/orders/test")
+    except SquareApiError as error:
+        assert error.code == "SQUARE_NETWORK_ERROR"
+        assert "after retries" in str(error)
+        assert "connect.squareup.com" in str(error)
+    else:
+        raise AssertionError("Expected SquareApiError")

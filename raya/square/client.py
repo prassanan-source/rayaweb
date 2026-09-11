@@ -4,11 +4,29 @@ import re
 import uuid
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from raya.config import Config
 from raya.square.errors import SquareApiError, classify_square_http
 
 _cached_menu: list[dict] | None = None
+_session = requests.Session()
+_session.mount(
+    "https://",
+    HTTPAdapter(
+        max_retries=Retry(
+            total=3,
+            connect=3,
+            read=3,
+            status=3,
+            backoff_factor=0.75,
+            status_forcelist=(429, 500, 502, 503, 504),
+            allowed_methods=None,
+            respect_retry_after_header=True,
+        )
+    ),
+)
 
 
 def square_config() -> dict:
@@ -28,18 +46,25 @@ def _square_fetch(path: str, method: str = "GET", json_body=None, params=None) -
     cfg = square_config()
     if not cfg["access_token"]:
         raise SquareApiError("Square API credentials are not configured.", "SQUARE_NOT_CONFIGURED")
-    return requests.request(
-        method,
-        f"{cfg['host']}{path}",
-        json=json_body,
-        params=params,
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {cfg['access_token']}",
-            "Square-Version": "2024-12-18",
-        },
-        timeout=30,
-    )
+    try:
+        return _session.request(
+            method,
+            f"{cfg['host']}{path}",
+            json=json_body,
+            params=params,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {cfg['access_token']}",
+                "Square-Version": "2024-12-18",
+            },
+            timeout=(10, 60),
+        )
+    except requests.RequestException as error:
+        raise SquareApiError(
+            "Square could not be reached after retries. Check outbound HTTPS access to "
+            "connect.squareup.com from the web server, then try again.",
+            "SQUARE_NETWORK_ERROR",
+        ) from error
 
 
 def _normalize_name(value: str) -> str:
