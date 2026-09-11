@@ -225,11 +225,17 @@ class SquareApi:
             )
         return match
 
-    def post_order(self, order: dict) -> dict | None:
-        response = _square_fetch("/v2/orders", method="POST", json_body=order)
+    def create_payment_link(self, checkout: dict) -> dict | None:
+        response = _square_fetch(
+            "/v2/online-checkout/payment-links",
+            method="POST",
+            json_body=checkout,
+        )
         if not response.ok:
-            raise classify_square_http(response.status_code, "order create", response.text)
-        return (response.json() or {}).get("order")
+            raise classify_square_http(
+                response.status_code, "payment-link create", response.text
+            )
+        return (response.json() or {}).get("payment_link")
 
     def get_order(self, order_id: str) -> dict | None:
         response = _square_fetch(f"/v2/orders/{order_id}")
@@ -250,3 +256,13 @@ def load_confirmed_square_order(order_id: str) -> dict | None:
     if not order or order.get("id") != order_id:
         return None
     return order
+
+
+def square_order_is_paid(order: dict | None) -> bool:
+    if not order:
+        return False
+    tenders = order.get("tenders") or []
+    if not any(tender.get("payment_id") for tender in tenders):
+        return False
+    amount_due = (order.get("net_amounts_due_money") or {}).get("amount")
+    return amount_due in (None, 0)

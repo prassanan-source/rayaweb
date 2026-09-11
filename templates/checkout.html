@@ -2,9 +2,9 @@
 {% block title %}Checkout | Raya Dublin{% endblock %}
 {% block content %}
 <div class="wrap page">
-  <p class="eyebrow">Square kitchen</p>
+  <p class="eyebrow">Secure Square checkout</p>
   <h1>Checkout</h1>
-  <p class="lede muted">Place order posts this bag to Square for Raya — 7150 Village Pkwy. If Square does not accept and store the ticket, you will not get an RY number and the restaurant will not see an order.</p>
+  <p class="lede muted">Continue to Square to pay securely. Square sends the paid pickup order to Raya’s POS and kitchen at 7150 Village Pkwy.</p>
 
   {% if not bag_lines %}
     <p class="empty">Your bag is empty. Add dishes on the menu, then return here to send them to Square.</p>
@@ -15,14 +15,12 @@
       <fieldset>
         <legend>How you’ll get it</legend>
         <div class="chips">
-          <label class="chip {% if dining != 'delivery' %}on{% endif %}">
-            <input type="radio" name="diningOption" value="pickup" {% if dining != 'delivery' %}checked{% endif %}> Pickup
-          </label>
-          <label class="chip {% if dining == 'delivery' %}on{% endif %}">
-            <input type="radio" name="diningOption" value="delivery" {% if dining == 'delivery' %}checked{% endif %}> Delivery
+          <label class="chip on">
+            <input type="radio" name="diningOption" value="pickup" checked> Pickup
           </label>
         </div>
         <p class="muted pickup-note">Pick up at {{ formatted_address }}.</p>
+        <p class="muted small">For delivery, use <a href="{{ square_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Square Online delivery</a>.</p>
       </fieldset>
 
       <fieldset class="form-grid">
@@ -31,15 +29,6 @@
         <label>Last name <input name="lastName" required></label>
         <label>Phone <input name="phone" type="tel" required autocomplete="tel"></label>
         <label>Email <input name="email" type="email" required autocomplete="email"></label>
-      </fieldset>
-
-      <fieldset class="form-grid delivery-fields">
-        <legend>Delivery address</legend>
-        <label class="span-2">Street <input name="address1"></label>
-        <label class="span-2">Apt / suite <input name="address2"></label>
-        <label>City <input name="city"></label>
-        <label>State <input name="state" value="CA"></label>
-        <label>ZIP <input name="zipCode"></label>
       </fieldset>
 
       <label>Kitchen notes
@@ -58,8 +47,8 @@
         {% endfor %}
       </ul>
       <p class="row-between"><span>Subtotal</span><span class="gold">{{ format_price(bag_subtotal) }}</span></p>
-      <p class="muted small">We do not invent an order number here. The ticket is posted to Square for 7150 Village Pkwy; only if Square stores the order and returns a ticket name do we show RY-xxxx.</p>
-      <button class="btn btn-block" type="submit">Place order</button>
+      <p class="muted small">The order reaches the Square POS and kitchen only after payment is completed on Square.</p>
+      <button class="btn btn-block" type="submit">Continue to Square payment</button>
       <p class="muted small"><a href="{{ square_order_url(dining) }}" target="_blank" rel="noopener noreferrer">Finish on Square instead</a></p>
     </aside>
   </form>

@@ -8,7 +8,6 @@ sys.path.insert(0, str(ROOT))
 from raya.square.errors import classify_square_http
 from raya.square.diagnose import missing_credential_message, privilege_message
 from raya.square.place_order import place_kitchen_order
-from raya.square.ticket import guest_ticket_from_square_order
 
 
 class FakeSquare:
@@ -31,7 +30,7 @@ class FakeSquare:
     def resolve_menu_item(self, _name):
         return {"name": "Chicken 65", "itemName": "Chicken 65", "variationId": "var-guid"}
 
-    def post_order(self, _order):
+    def create_payment_link(self, _order):
         if self.raise_post:
             raise self.raise_post
         return self.posted
@@ -54,53 +53,50 @@ INPUT = {
 }
 
 
-def test_no_ticket_when_square_not_configured():
+def test_no_checkout_when_square_not_configured():
     result = place_kitchen_order(INPUT, FakeSquare(configured=False))
     assert result["ok"] is False
     assert result["code"] == "SQUARE_NOT_CONFIGURED"
 
 
-def test_no_ticket_when_square_rejects_post():
+def test_no_checkout_when_square_rejects_payment_link():
     result = place_kitchen_order(
         INPUT,
-        FakeSquare(posted=None, fetched={"id": "should-not-use", "ticket_name": "1004"}),
+        FakeSquare(posted=None),
     )
     assert result["ok"] is False
     assert result["code"] == "SQUARE_REJECTED"
 
 
-def test_no_ticket_when_get_cannot_load_order():
+def test_returns_square_hosted_payment_link():
     result = place_kitchen_order(
         INPUT,
-        FakeSquare(posted={"id": "square-order-id", "ticket_name": "1004"}, fetched=None),
+        FakeSquare(
+            posted={
+                "order_id": "square-order-id",
+                "url": "https://square.link/u/test",
+            }
+        ),
     )
-    assert result["ok"] is False
-    assert result["code"] == "SQUARE_NOT_CONFIRMED"
-
-
-def test_issues_ry_number_only_after_get_confirms_same_id():
-    def fetch(order_id):
-        assert order_id == "square-order-id"
-        return {"id": order_id, "ticket_name": "1004"}
-
-    result = place_kitchen_order(INPUT, FakeSquare(posted={"id": "square-order-id"}, fetched=fetch))
     assert result["ok"] is True
     assert result["orderId"] == "square-order-id"
-    assert result["displayNumber"] == "RY-1004"
+    assert result["checkoutUrl"] == "https://square.link/u/test"
 
 
 def test_pickup_order_is_explicitly_asap():
     square = FakeSquare(
-        posted={"id": "square-order-id"},
-        fetched={"id": "square-order-id", "ticket_name": "1004"},
+        posted={
+            "order_id": "square-order-id",
+            "url": "https://square.link/u/test",
+        },
     )
     captured = {}
 
-    def post_order(order):
+    def create_payment_link(order):
         captured.update(order)
         return square.posted
 
-    square.post_order = post_order
+    square.create_payment_link = create_payment_link
     result = place_kitchen_order(INPUT, square)
 
     assert result["ok"] is True
@@ -109,18 +105,8 @@ def test_pickup_order_is_explicitly_asap():
     assert "pickup_at" not in pickup
 
 
-def test_delivery_order_is_explicitly_asap():
-    square = FakeSquare(
-        posted={"id": "square-order-id"},
-        fetched={"id": "square-order-id", "ticket_name": "1004"},
-    )
-    captured = {}
-
-    def post_order(order):
-        captured.update(order)
-        return square.posted
-
-    square.post_order = post_order
+def test_custom_delivery_checkout_is_rejected():
+    square = FakeSquare()
     delivery_input = {
         **INPUT,
         "diningOption": "delivery",
@@ -134,18 +120,34 @@ def test_delivery_order_is_explicitly_asap():
     }
     result = place_kitchen_order(delivery_input, square)
 
-    assert result["ok"] is True
-    delivery = captured["order"]["fulfillments"][0]["delivery_details"]
-    assert delivery["schedule_type"] == "ASAP"
-    assert "deliver_at" not in delivery
+    assert result["ok"] is False
+    assert result["code"] == "SQUARE_DELIVERY_UNSUPPORTED"
 
 
-def test_guest_ticket_requires_id():
-    assert guest_ticket_from_square_order(None) is None
-    assert guest_ticket_from_square_order({}) is None
-    assert guest_ticket_from_square_order({"ticket_name": "1004"}) is None
-    assert guest_ticket_from_square_order({"id": "abc", "ticket_name": "1004"}) == "RY-1004"
-    assert guest_ticket_from_square_order({"id": "abcd1234", "ticket_name": "Raya Web - Asha"}) == "RY-1234"
+def test_only_paid_square_order_is_confirmed():
+    from raya.square.client import square_order_is_paid
+
+    assert square_order_is_paid({"id": "unpaid", "tenders": []}) is False
+    assert (
+        square_order_is_paid(
+            {
+                "id": "paid",
+                "tenders": [{"payment_id": "payment-id"}],
+                "net_amounts_due_money": {"amount": 0, "currency": "USD"},
+            }
+        )
+        is True
+    )
+    assert (
+        square_order_is_paid(
+            {
+                "id": "part-paid",
+                "tenders": [{"payment_id": "payment-id"}],
+                "net_amounts_due_money": {"amount": 100, "currency": "USD"},
+            }
+        )
+        is False
+    )
 
 
 def test_http_401_means_wrong_token():

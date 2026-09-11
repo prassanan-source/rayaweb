@@ -4,13 +4,13 @@
 <div class="wrap page">
   <p class="eyebrow">Square</p>
   <h1>Order for pickup or delivery</h1>
-  <p class="lede muted">An RY ticket number is issued only after Square stores the order for {{ restaurant.square.location_name }}. If Square does not accept the ticket, you will not see “Order placed” and the kitchen will not see a ticket.</p>
+  <p class="lede muted">Build your order here, then pay on Square’s secure checkout. Paid pickup orders are sent to {{ restaurant.square.location_name }} in Square POS.</p>
   <p class="muted">Online ordering {{ restaurant.hours.online_display }} · <span class="badge {% if status.open %}open{% endif %}">{{ status.label }}</span></p>
 
   <div class="two-col">
     <article class="panel">
       <h2>Order on this site</h2>
-      <p class="muted">Add dishes from the menu, then checkout. We POST the ticket to Square and only show a number after Square returns the same order on GET.</p>
+      <p class="muted">Add dishes from the menu, then continue to Square to pay. An unpaid API record is not treated as a kitchen ticket.</p>
       <a class="btn" href="{{ url_for('main.menu') }}">Start with the menu</a>
     </article>
     <article class="panel">

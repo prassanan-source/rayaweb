@@ -13,10 +13,14 @@ from raya.restaurant import (
     restaurant,
     square_order_url,
 )
-from raya.square.client import load_confirmed_square_order, square_api, square_is_configured
+from raya.square.client import (
+    load_confirmed_square_order,
+    square_api,
+    square_is_configured,
+    square_order_is_paid,
+)
 from raya.square.diagnose import credential_inventory, missing_credential_message
 from raya.square.place_order import place_kitchen_order
-from raya.square.ticket import guest_ticket_from_square_order
 
 bp = Blueprint("main", __name__)
 
@@ -130,10 +134,7 @@ def order():
 
 @bp.get("/order/checkout")
 def checkout():
-    dining = request.args.get("dining") or "pickup"
-    if dining not in {"pickup", "delivery"}:
-        dining = "pickup"
-    return render_template("checkout.html", dining=dining, **_ctx())
+    return render_template("checkout.html", dining="pickup", **_ctx())
 
 
 @bp.post("/cart/add")
@@ -168,7 +169,7 @@ def cart_update():
 
 @bp.post("/order/place")
 def place_order():
-    dining_option = "delivery" if request.form.get("diningOption") == "delivery" else "pickup"
+    dining_option = "pickup"
     lines = [{"itemId": line["itemId"], "name": line["name"], "quantity": line["quantity"]} for line in read_bag()]
 
     if not square_is_configured():
@@ -204,7 +205,7 @@ def place_order():
         return redirect(url_for("main.checkout", dining=dining_option))
 
     write_bag([])
-    return redirect(url_for("main.confirmed", guid=result["orderId"]))
+    return redirect(result["checkoutUrl"])
 
 
 @bp.get("/order/confirmed")
@@ -215,13 +216,12 @@ def confirmed():
             "confirmed.html",
             ok=False,
             title="No kitchen ticket yet",
-            body="An order number is only shown after Square accepts the order. We never mint RY numbers from this page’s query string.",
+            body="An order is only confirmed after payment on Square. No order number is created from this page’s query string.",
             **_ctx(),
         )
 
     try:
         order = load_confirmed_square_order(order_id)
-        display_number = guest_ticket_from_square_order(order)
     except Exception:
         return render_template(
             "confirmed.html",
@@ -231,18 +231,18 @@ def confirmed():
             **_ctx(),
         )
 
-    if not display_number:
+    if not square_order_is_paid(order):
         return render_template(
             "confirmed.html",
             ok=False,
-            title="Square did not confirm this order",
-            body="The kitchen ticket is not in Square for 7150 Village Pkwy, so we cannot show an order number. If you think you were charged, call the restaurant.",
+            title="Payment not confirmed",
+            body="Square has not marked this order paid, so it has not been sent to the Square POS or kitchen. Complete payment on Square, or call the restaurant if you were charged.",
             **_ctx(),
         )
 
     return render_template(
         "confirmed.html",
         ok=True,
-        display_number=display_number,
+        order_id=order_id,
         **_ctx(),
     )

@@ -31,7 +31,7 @@ def test_add_to_bag_then_checkout():
     )
     assert response.status_code == 200
     assert b"Chicken 65" in response.data
-    assert b"Place order" in response.data
+    assert b"Continue to Square payment" in response.data
 
 
 def test_confirmed_without_guid_does_not_mint_ticket():

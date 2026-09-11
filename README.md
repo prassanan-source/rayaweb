@@ -6,19 +6,22 @@ This is **not** a Node.js app. Run it with Python 3 and Flask.
 
 Kitchen tickets go to Square for **Raya - 7150 Village Pkwy**.
 
-## Order numbers
+## Order and payment flow
 
-An `RY-` number is **never** created locally. Checkout POSTs the bag to Square, then GETs that same order ID back. Only if Square returns the stored order do we show:
+Checkout creates a Square-hosted payment link containing the pickup
+fulfillment, then redirects the guest to `square.link` to pay. Square only
+pushes a fulfillment to POS, Order Manager, and KDS after payment. Merely
+creating and retrieving an unpaid Orders API record is not confirmation that
+the kitchen received it.
 
-> Order placed! Your order is live in our kitchen. Pick up at 7150 Village Pkwy, Dublin CA  
-> RY-1004
-
-If Square rejects the POST, or GET cannot load the order, the guest sees an error and **no ticket number**. Visiting `/order/confirmed` without a Square order ID, or with an ID Square does not have, also shows no number.
+The site never fabricates an `RY-` ticket from a Square order ID. A local
+confirmation page only treats an order as confirmed when Square returns a
+payment tender and no remaining amount due.
 
 ## What’s included
 
 - Home, full menu with bag, checkout, visit (map + hours)
-- Square-verified confirmation page
+- Square-hosted card payment and paid-order verification
 - Branded Square Online Ordering fallback: `https://raya-7150-village-pkwy.square.site` (override with `SQUARE_ORDER_URL`)
 
 ## Run locally
@@ -68,7 +71,10 @@ cd /home/rayarest/rayaweb
 touch tmp/restart.txt
 ```
 
-Create those credentials in the Square Developer Dashboard with `ORDERS_WRITE`, `ORDERS_READ`, `ITEMS_READ`, and `ITEMS_WRITE`. Without them, checkout will not invent a ticket — it tells the guest to finish on Square instead.
+Create those credentials in the Square Developer Dashboard with
+`ORDERS_WRITE`, `ORDERS_READ`, `PAYMENTS_WRITE`, `ITEMS_READ`, and
+`ITEMS_WRITE`. Without `PAYMENTS_WRITE`, the app cannot create the secure
+Square checkout that turns the fulfillment into a paid POS/KDS order.
 
 After deploying a website menu change, sync any missing dishes and prices into
 the Square catalog:

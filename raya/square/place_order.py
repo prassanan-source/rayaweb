@@ -5,7 +5,6 @@ import uuid
 
 from raya.menu import find_menu_item
 from raya.square.errors import failure_from_unknown
-from raya.square.ticket import guest_ticket_from_square_order
 
 
 def ten_digit_phone(phone: str) -> str | None:
@@ -25,6 +24,15 @@ def place_kitchen_order(inp: dict, square) -> dict:
             "ok": False,
             "code": "SQUARE_NOT_CONFIGURED",
             "error": "Square is not connected. No kitchen ticket was created.",
+        }
+    if inp.get("diningOption") == "delivery":
+        return {
+            "ok": False,
+            "code": "SQUARE_DELIVERY_UNSUPPORTED",
+            "error": (
+                "Delivery must be placed through Square Online. Square does not show "
+                "API-created delivery orders in POS without delivery partner approval."
+            ),
         }
 
     lines = inp.get("lines") or []
@@ -49,17 +57,6 @@ def place_kitchen_order(inp: dict, square) -> dict:
             "code": "INVALID_GUEST",
             "error": "Name, a 10-digit phone number, and email are required.",
         }
-
-    if inp.get("diningOption") == "delivery":
-        delivery = inp.get("delivery") or {}
-        if not all(
-            (delivery.get(key) or "").strip() for key in ("address1", "city", "state", "zipCode")
-        ):
-            return {
-                "ok": False,
-                "code": "INVALID_GUEST",
-                "error": "Delivery needs a full street address.",
-            }
 
     try:
         fulfillment_type = square.resolve_fulfillment_type(inp["diningOption"])
@@ -129,41 +126,26 @@ def place_kitchen_order(inp: dict, square) -> dict:
     }
 
     try:
-        posted = square.post_order(payload)
+        payment_link = square.create_payment_link(payload)
     except Exception as error:
         return failure_from_unknown(
             error,
-            {"ok": False, "code": "SQUARE_REJECTED", "error": "Square rejected the order."},
+            {
+                "ok": False,
+                "code": "SQUARE_REJECTED",
+                "error": "Square could not start secure payment.",
+            },
         )
 
-    if not posted or not posted.get("id"):
+    if not payment_link or not payment_link.get("order_id") or not payment_link.get("url"):
         return {
             "ok": False,
             "code": "SQUARE_REJECTED",
-            "error": "Square did not accept the order. No kitchen ticket was created.",
+            "error": "Square did not return a secure checkout link. No order was placed.",
         }
 
-    try:
-        verified = square.get_order(posted["id"])
-    except Exception as error:
-        return failure_from_unknown(
-            error,
-            {"ok": False, "code": "SQUARE_NOT_CONFIRMED", "error": "Square did not confirm the kitchen ticket."},
-        )
-
-    if not verified or verified.get("id") != posted["id"]:
-        return {
-            "ok": False,
-            "code": "SQUARE_NOT_CONFIRMED",
-            "error": "Square did not confirm the kitchen ticket. No order number was issued.",
-        }
-
-    display_number = guest_ticket_from_square_order(verified)
-    if not display_number:
-        return {
-            "ok": False,
-            "code": "SQUARE_NO_TICKET",
-            "error": "Square saved the order but did not return a ticket name yet.",
-        }
-
-    return {"ok": True, "orderId": verified["id"], "displayNumber": display_number}
+    return {
+        "ok": True,
+        "orderId": payment_link["order_id"],
+        "checkoutUrl": payment_link["url"],
+    }
