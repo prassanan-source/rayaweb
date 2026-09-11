@@ -13,8 +13,15 @@ def create_app(config_object: type[Config] | None = None) -> Flask:
     app.config.from_object(config_object or Config)
 
     from raya.views import bp
+    from raya.staff import bp as staff_bp
 
     app.register_blueprint(bp)
+    app.register_blueprint(staff_bp)
+
+    with app.app_context():
+        from raya.order_store import init_order_store
+
+        init_order_store()
 
     @app.cli.command("square-sync-menu")
     def square_sync_menu():
