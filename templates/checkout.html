@@ -20,7 +20,11 @@
           </label>
         </div>
         <p class="muted pickup-note">Pick up at {{ formatted_address }}.</p>
-        <p class="muted small">For delivery, use <a href="{{ square_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Square Online delivery</a>.</p>
+        {% if square_online_configured %}
+          <p class="muted small">For delivery, use <a href="{{ square_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Square Online delivery</a>.</p>
+        {% else %}
+          <p class="muted small">For delivery, call <a href="{{ restaurant.phone_href }}">{{ restaurant.phone }}</a>.</p>
+        {% endif %}
       </fieldset>
 
       <fieldset class="form-grid">
@@ -49,7 +53,6 @@
       <p class="row-between"><span>Subtotal</span><span class="gold">{{ format_price(bag_subtotal) }}</span></p>
       <p class="muted small">The order reaches the Square POS and kitchen only after payment is completed on Square.</p>
       <button class="btn btn-block" type="submit">Continue to Square payment</button>
-      <p class="muted small"><a href="{{ square_order_url(dining) }}" target="_blank" rel="noopener noreferrer">Finish on Square instead</a></p>
     </aside>
   </form>
   {% endif %}

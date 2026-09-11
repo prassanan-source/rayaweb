@@ -57,13 +57,18 @@ def full_address_lines() -> list[str]:
 
 
 def square_order_url(mode: str | None = None) -> str:
-    slug = Config.SQUARE_SITE_SLUG or "raya-7150-village-pkwy"
-    base = (Config.SQUARE_ORDER_URL or "").rstrip("/") or f"https://{slug}.square.site"
+    base = (Config.SQUARE_ORDER_URL or "").rstrip("/")
+    if not base:
+        return "/menu"
     if mode == "pickup":
         return f"{base}?fulfillment=PICKUP"
     if mode == "delivery":
         return f"{base}?fulfillment=DELIVERY"
     return base
+
+
+def square_online_configured() -> bool:
+    return bool(Config.SQUARE_ORDER_URL)
 
 
 def google_maps_url() -> str:

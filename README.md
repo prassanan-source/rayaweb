@@ -22,7 +22,7 @@ payment tender and no remaining amount due.
 
 - Home, full menu with bag, checkout, visit (map + hours)
 - Square-hosted card payment and paid-order verification
-- Branded Square Online Ordering fallback: `https://raya-7150-village-pkwy.square.site` (override with `SQUARE_ORDER_URL`)
+- Optional branded Square Online store, used only when a verified `SQUARE_ORDER_URL` is configured
 
 ## Run locally
 
@@ -51,7 +51,7 @@ pytest
 | | |
 | --- | --- |
 | Location | Raya - 7150 Village Pkwy |
-| Branded ordering | `https://raya-7150-village-pkwy.square.site` |
+| Branded ordering | Set `SQUARE_ORDER_URL` only after publishing a Square Online store |
 | API host | `https://connect.squareup.com` |
 
 Needed in `/home/rayarest/rayaweb/.env` as **equals**, not colons:
@@ -60,8 +60,7 @@ Needed in `/home/rayarest/rayaweb/.env` as **equals**, not colons:
 SQUARE_ACCESS_TOKEN=EAAA...
 SQUARE_LOCATION_ID=L...
 SQUARE_API_HOST=https://connect.squareup.com
-SQUARE_SITE_SLUG=raya-7150-village-pkwy
-SQUARE_ORDER_URL=
+SQUARE_ORDER_URL=           # optional, only if Square Online is published
 ```
 
 Then restart Passenger:
@@ -123,7 +122,6 @@ grep -q SQUARE_ACCESS_TOKEN .env 2>/dev/null || cat >> .env << 'EOF'
 SQUARE_ACCESS_TOKEN=
 SQUARE_LOCATION_ID=
 SQUARE_API_HOST=https://connect.squareup.com
-SQUARE_SITE_SLUG=raya-7150-village-pkwy
 SQUARE_ORDER_URL=
 EOF
 

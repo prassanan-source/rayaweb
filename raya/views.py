@@ -11,6 +11,7 @@ from raya.restaurant import (
     google_maps_embed_url,
     google_maps_url,
     restaurant,
+    square_online_configured,
     square_order_url,
 )
 from raya.square.client import (
@@ -31,7 +32,7 @@ FAQS = [
     },
     {
         "q": "Do you offer pickup and delivery?",
-        "a": "Yes. Order pickup or delivery on Square — orders go straight to the kitchen, with no marketplace commission. You can also call us.",
+        "a": "Yes. Build a pickup order here and pay securely on Square. For delivery, use the configured Square Online store or call us.",
     },
     {
         "q": "Where are you, and what areas do you deliver to?",
@@ -42,7 +43,7 @@ FAQS = [
     },
     {
         "q": "What are your hours?",
-        "a": f"Dine-in is {restaurant['hours']['display']} daily. Online ordering on Square runs until 9:45 PM.",
+        "a": f"Dine-in is {restaurant['hours']['display']} daily. Online pickup ordering runs until 9:45 PM.",
     },
     {
         "q": "Is there vegetarian food?",
@@ -67,6 +68,7 @@ def _ctx(**extra):
         "restaurant": restaurant,
         "formatted_address": formatted_address(),
         "square_order_url": square_order_url,
+        "square_online_configured": square_online_configured(),
         "status": status_copy(),
         "bag_count": bag_count(lines),
         "bag_lines": lines,
@@ -84,6 +86,7 @@ def inject_globals():
         "restaurant": restaurant,
         "formatted_address": formatted_address(),
         "square_order_url": square_order_url,
+        "square_online_configured": square_online_configured(),
         "status": status_copy(),
         "bag_count": bag_count(),
     }

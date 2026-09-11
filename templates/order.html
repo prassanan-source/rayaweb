@@ -17,8 +17,12 @@
       <h2>Pay on Square</h2>
       <p class="muted">Card checkout runs on Square’s branded ordering page for this location — that is the channel that fires tickets into the POS.</p>
       <div class="row">
-        <a class="btn" href="{{ square_order_url('pickup') }}" target="_blank" rel="noopener noreferrer">Pickup</a>
-        <a class="btn btn-ghost" href="{{ square_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Delivery</a>
+        <a class="btn" href="{{ url_for('main.menu') }}">Pickup</a>
+        {% if square_online_configured %}
+          <a class="btn btn-ghost" href="{{ square_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Delivery</a>
+        {% else %}
+          <a class="btn btn-ghost" href="{{ restaurant.phone_href }}">Call for delivery</a>
+        {% endif %}
       </div>
     </article>
   </div>
@@ -26,7 +30,7 @@
   <aside class="panel dashed">
     <h2>Prefer to call?</h2>
     <p class="muted">Phone orders at <a href="{{ restaurant.phone_href }}">{{ restaurant.phone }}</a>. Catering — email <a href="{{ restaurant.email_href }}">{{ restaurant.email }}</a>.</p>
-    <p><a href="{{ square_order_url() }}" target="_blank" rel="noopener noreferrer">Open Square Online Ordering</a></p>
+    <p><a href="{{ url_for('main.menu') }}">Start an online pickup order</a></p>
   </aside>
 </div>
 {% endblock %}

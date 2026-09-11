@@ -94,5 +94,4 @@ class Config:
     SQUARE_API_HOST = _EnvStr("SQUARE_API_HOST", "https://connect.squareup.com")
     SQUARE_ACCESS_TOKEN = _EnvStr("SQUARE_ACCESS_TOKEN")
     SQUARE_LOCATION_ID = _EnvStr("SQUARE_LOCATION_ID")
-    SQUARE_SITE_SLUG = _EnvStr("SQUARE_SITE_SLUG", "raya-7150-village-pkwy")
     SQUARE_ORDER_URL = _EnvStr("SQUARE_ORDER_URL")
