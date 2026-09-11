@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import uuid
 
 import requests
 
@@ -64,28 +65,109 @@ def flatten_catalog_items(objects: list) -> list[dict]:
     return items
 
 
-def load_menu() -> list[dict]:
-    global _cached_menu
-    if _cached_menu:
-        return _cached_menu
-    items: list[dict] = []
+def load_catalog_objects() -> list[dict]:
+    objects: list[dict] = []
     cursor = None
     while True:
-        params = {"types": "ITEM"}
+        params = {"types": "ITEM,CATEGORY"}
         if cursor:
             params["cursor"] = cursor
         response = _square_fetch("/v2/catalog/list", params=params)
         if not response.ok:
             raise classify_square_http(response.status_code, "catalog read", response.text)
         body = response.json()
-        items.extend(flatten_catalog_items(body.get("objects") or []))
+        objects.extend(body.get("objects") or [])
         cursor = body.get("cursor")
         if not cursor:
             break
+    return objects
+
+
+def load_menu() -> list[dict]:
+    global _cached_menu
+    if _cached_menu:
+        return _cached_menu
+    items = flatten_catalog_items(load_catalog_objects())
     if not items:
         raise RuntimeError("Square returned an empty catalog.")
     _cached_menu = items
     return _cached_menu
+
+
+def sync_web_menu(categories: list[dict]) -> dict:
+    """Create website items that do not already exist in the Square catalog."""
+    global _cached_menu
+    existing_objects = load_catalog_objects()
+    existing_names = {
+        _normalize_name((obj.get("item_data") or {}).get("name") or "")
+        for obj in existing_objects
+        if obj.get("type") == "ITEM"
+    }
+    location_id = square_config()["location_id"]
+    if not location_id:
+        raise SquareApiError("Square location ID is not configured.", "SQUARE_NOT_CONFIGURED")
+
+    creates: list[dict] = []
+    created_names: list[str] = []
+    existing_count = 0
+    for category in categories:
+        for item in category.get("items") or []:
+            name = str(item.get("name") or "").strip()
+            if not name:
+                continue
+            if _normalize_name(name) in existing_names:
+                existing_count += 1
+                continue
+            item_ref = f"#{uuid.uuid4().hex}"
+            creates.append(
+                {
+                    "type": "ITEM",
+                    "id": item_ref,
+                    "present_at_all_locations": False,
+                    "present_at_location_ids": [location_id],
+                    "item_data": {
+                        "name": name,
+                        "description": str(item.get("description") or "").strip(),
+                        "variations": [
+                            {
+                                "type": "ITEM_VARIATION",
+                                "id": f"#{uuid.uuid4().hex}",
+                                "present_at_all_locations": False,
+                                "present_at_location_ids": [location_id],
+                                "item_variation_data": {
+                                    "item_id": item_ref,
+                                    "name": "Regular",
+                                    "pricing_type": "FIXED_PRICING",
+                                    "price_money": {
+                                        "amount": round(float(item["price"]) * 100),
+                                        "currency": "USD",
+                                    },
+                                },
+                            }
+                        ],
+                    },
+                }
+            )
+            created_names.append(name)
+
+    if creates:
+        response = _square_fetch(
+            "/v2/catalog/batch-upsert",
+            method="POST",
+            json_body={
+                "idempotency_key": str(uuid.uuid4()),
+                "batches": [{"objects": creates}],
+            },
+        )
+        if not response.ok:
+            raise classify_square_http(response.status_code, "catalog sync", response.text)
+        _cached_menu = None
+
+    return {
+        "created": created_names,
+        "created_count": len(created_names),
+        "existing_count": existing_count,
+    }
 
 
 class SquareApi:

@@ -68,7 +68,22 @@ cd /home/rayarest/rayaweb
 touch tmp/restart.txt
 ```
 
-Create those credentials in the Square Developer Dashboard with `ORDERS_WRITE`, `ORDERS_READ`, and `ITEMS_READ`. Without them, checkout will not invent a ticket — it tells the guest to finish on Square instead.
+Create those credentials in the Square Developer Dashboard with `ORDERS_WRITE`, `ORDERS_READ`, `ITEMS_READ`, and `ITEMS_WRITE`. Without them, checkout will not invent a ticket — it tells the guest to finish on Square instead.
+
+After deploying a website menu change, sync any missing dishes and prices into
+the Square catalog:
+
+```bash
+cd /home/rayarest/rayaweb
+source .venv/bin/activate
+python -m flask --app raya square-sync-menu
+touch tmp/restart.txt
+```
+
+The command is additive: it creates website dishes that are missing from
+Square and leaves existing Square catalog items unchanged. This prevents
+duplicate dishes and preserves modifiers or taxes already configured in
+Square.
 
 ## Deploy to the server
 

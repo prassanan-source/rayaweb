@@ -1,4 +1,5 @@
 from flask import Flask
+import click
 
 from raya.config import Config
 
@@ -14,6 +15,19 @@ def create_app(config_object: type[Config] | None = None) -> Flask:
     from raya.views import bp
 
     app.register_blueprint(bp)
+
+    @app.cli.command("square-sync-menu")
+    def square_sync_menu():
+        """Create website menu items missing from the Square catalog."""
+        from raya.square.sync import sync_catalog
+
+        result = sync_catalog()
+        click.echo(
+            f"Square menu sync complete: {result['created_count']} created, "
+            f"{result['existing_count']} already present."
+        )
+        for name in result["created"]:
+            click.echo(f"  created: {name}")
 
     @app.errorhandler(404)
     def not_found(_error):

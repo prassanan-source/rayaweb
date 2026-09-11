@@ -27,7 +27,7 @@ def classify_square_http(status: int, operation: str, body: str = "") -> SquareA
         return SquareApiError(
             f"Square authenticated but refused {operation} (HTTP 403). This access token does not "
             "have write/read privilege for Raya — 7150 Village Pkwy. In the Square Developer Dashboard, "
-            "grant ORDERS_WRITE, ORDERS_READ, and ITEMS_READ." + suffix,
+            "grant ORDERS_WRITE, ORDERS_READ, ITEMS_READ, and ITEMS_WRITE." + suffix,
             "SQUARE_FORBIDDEN",
             403,
         )

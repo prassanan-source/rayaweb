@@ -58,7 +58,7 @@ def missing_credential_message() -> str:
 
 
 def privilege_message(scopes: list[str]) -> str:
-    needed = ["ORDERS_WRITE", "ORDERS_READ", "ITEMS_READ"]
+    needed = ["ORDERS_WRITE", "ORDERS_READ", "ITEMS_READ", "ITEMS_WRITE"]
     normalized = [scope.replace(".", "_").upper() for scope in scopes]
     missing = [scope for scope in needed if scope not in normalized]
     current = ", ".join(scopes) or "(none)"

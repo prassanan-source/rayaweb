@@ -143,3 +143,71 @@ def test_privilege_message_flags_missing_write():
     message = privilege_message(["ITEMS_READ", "ORDERS_READ"])
     assert "does not have write privilege" in message
     assert "ORDERS_WRITE" in message
+
+
+def test_sync_web_menu_creates_missing_items(monkeypatch):
+    from raya.square import client
+
+    calls = []
+
+    class Response:
+        ok = True
+        status_code = 200
+        text = ""
+
+        def __init__(self, body):
+            self.body = body
+
+        def json(self):
+            return self.body
+
+    def fetch(path, method="GET", json_body=None, params=None):
+        calls.append((path, method, json_body, params))
+        if method == "GET":
+            return Response(
+                {
+                    "objects": [
+                        {
+                            "type": "ITEM",
+                            "id": "existing",
+                            "item_data": {"name": "Chicken 65", "variations": []},
+                        }
+                    ]
+                }
+            )
+        return Response({"objects": []})
+
+    monkeypatch.setattr(client, "_square_fetch", fetch)
+    monkeypatch.setattr(
+        client,
+        "square_config",
+        lambda: {
+            "host": "https://connect.squareup.com",
+            "access_token": "token",
+            "location_id": "LOCATION",
+        },
+    )
+
+    result = client.sync_web_menu(
+        [
+            {
+                "items": [
+                    {"name": "Chicken 65", "description": "Existing", "price": 13.99},
+                    {"name": "Mixed Veg Soup", "description": "Vegetable soup", "price": 4.99},
+                ]
+            }
+        ]
+    )
+
+    assert result == {
+        "created": ["Mixed Veg Soup"],
+        "created_count": 1,
+        "existing_count": 1,
+    }
+    payload = calls[-1][2]
+    created = payload["batches"][0]["objects"][0]
+    assert created["item_data"]["name"] == "Mixed Veg Soup"
+    assert created["item_data"]["variations"][0]["item_variation_data"]["price_money"] == {
+        "amount": 499,
+        "currency": "USD",
+    }
