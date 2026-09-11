@@ -5,6 +5,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from raya.bag import add_line, bag_count, bag_subtotal, read_bag, write_bag
 from raya.hours import status_copy
 from raya.menu import featured_dishes, filtered_categories, find_menu_item, format_price, item_id
+from raya.order_store import create_order, update_order
 from raya.restaurant import (
     formatted_address,
     full_address_lines,
@@ -178,40 +179,61 @@ def place_order():
     dining_option = (
         "delivery" if request.form.get("diningOption") == "delivery" else "pickup"
     )
-    lines = [{"itemId": line["itemId"], "name": line["name"], "quantity": line["quantity"]} for line in read_bag()]
+    lines = [
+        {
+            "itemId": line["itemId"],
+            "name": line["name"],
+            "price": line["price"],
+            "quantity": line["quantity"],
+        }
+        for line in read_bag()
+    ]
+    order_input = {
+        "diningOption": dining_option,
+        "guest": {
+            "firstName": request.form.get("firstName") or "",
+            "lastName": request.form.get("lastName") or "",
+            "phone": request.form.get("phone") or "",
+            "email": request.form.get("email") or "",
+        },
+        "notes": request.form.get("notes") or "",
+        "lines": lines,
+        "delivery": {
+            "address1": request.form.get("address1") or "",
+            "address2": request.form.get("address2") or "",
+            "city": request.form.get("city") or "",
+            "state": request.form.get("state") or "",
+            "zipCode": request.form.get("zipCode") or "",
+        }
+        if dining_option == "delivery"
+        else None,
+    }
+    local_order_id = create_order(order_input)
+    order_input["localOrderId"] = local_order_id
 
     if not square_is_configured():
-        flash(missing_credential_message(), "error")
+        error = missing_credential_message()
+        update_order(local_order_id, status="SQUARE_ERROR", square_error=error)
+        flash(f"Saved locally as {local_order_id}.\n\n{error}", "error")
         return redirect(url_for("main.checkout", dining=dining_option))
 
-    result = place_kitchen_order(
-        {
-            "diningOption": dining_option,
-            "guest": {
-                "firstName": request.form.get("firstName") or "",
-                "lastName": request.form.get("lastName") or "",
-                "phone": request.form.get("phone") or "",
-                "email": request.form.get("email") or "",
-            },
-            "notes": request.form.get("notes") or "",
-            "lines": lines,
-            "delivery": {
-                "address1": request.form.get("address1") or "",
-                "address2": request.form.get("address2") or "",
-                "city": request.form.get("city") or "",
-                "state": request.form.get("state") or "",
-                "zipCode": request.form.get("zipCode") or "",
-            }
-            if dining_option == "delivery"
-            else None,
-        },
-        square_api,
-    )
+    result = place_kitchen_order(order_input, square_api)
 
     if not result.get("ok"):
-        flash(f"{result.get('error')}\n\n{credential_inventory()}", "error")
+        error = str(result.get("error") or "Square checkout failed.")
+        update_order(local_order_id, status="SQUARE_ERROR", square_error=error)
+        flash(
+            f"Saved locally as {local_order_id}.\n\n{error}\n\n{credential_inventory()}",
+            "error",
+        )
         return redirect(url_for("main.checkout", dining=dining_option))
 
+    update_order(
+        local_order_id,
+        status="AWAITING_PAYMENT",
+        square_order_id=result["orderId"],
+        square_checkout_url=result["checkoutUrl"],
+    )
     write_bag([])
     return redirect(result["checkoutUrl"])
 

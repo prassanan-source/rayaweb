@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Staff login | Raya{% endblock %}
+{% block content %}
+<div class="wrap page narrow">
+  <p class="eyebrow">Restaurant staff</p>
+  <h1>Order portal</h1>
+  <p class="muted">Sign in to view locally stored customer orders.</p>
+  <form method="post" class="panel stack">
+    <label>Username
+      <input name="username" autocomplete="username" required autofocus>
+    </label>
+    <label>Password
+      <input name="password" type="password" autocomplete="current-password" required>
+    </label>
+    <button class="btn" type="submit">Sign in</button>
+  </form>
+</div>
+{% endblock %}

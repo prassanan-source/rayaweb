@@ -22,6 +22,7 @@ payment tender and no remaining amount due.
 
 - Home, full menu with bag, checkout, visit (map + hours)
 - Square-hosted card payment and paid-order verification
+- Password-protected staff order portal backed by local SQLite
 - Optional branded Square Online store, used only when a verified `SQUARE_ORDER_URL` is configured
 
 ## Run locally
@@ -62,6 +63,11 @@ SQUARE_LOCATION_ID=L...
 SQUARE_API_HOST=https://connect.squareup.com
 SQUARE_API_VERSION=2026-08-19
 SQUARE_ORDER_URL=           # optional, only if Square Online is published
+ORDER_DB_PATH=/home/rayarest/rayaweb/instance/raya-orders.db
+RAYA_ADMIN_USERNAME=admin
+RAYA_ADMIN_PASSWORD=choose-a-long-unique-password
+RAYA_USER_USERNAME=user
+RAYA_USER_PASSWORD=choose-another-long-unique-password
 ```
 
 Then restart Passenger:
@@ -90,6 +96,20 @@ The command is additive: it creates website dishes that are missing from
 Square and leaves existing Square catalog items unchanged. This prevents
 duplicate dishes and preserves modifiers or taxes already configured in
 Square.
+
+## Staff order portal
+
+Every customer submission is written to the local SQLite database before the
+Square API is called. It includes customer contact information, fulfillment
+type, delivery address, notes, line items, subtotal, Square IDs, and error
+status. Restaurant employees can sign in at:
+
+`https://www.rayarestaurant.com/staff/login`
+
+Both the admin and user accounts can view order details and refresh an order's
+payment status from Square. Set strong, different passwords in `.env`; no
+default password is provided. Back up the file configured by `ORDER_DB_PATH`
+because it contains customer personal information.
 
 ## Deploy to the server
 
@@ -125,6 +145,11 @@ SQUARE_LOCATION_ID=
 SQUARE_API_HOST=https://connect.squareup.com
 SQUARE_API_VERSION=2026-08-19
 SQUARE_ORDER_URL=
+ORDER_DB_PATH=/home/rayarest/rayaweb/instance/raya-orders.db
+RAYA_ADMIN_USERNAME=admin
+RAYA_ADMIN_PASSWORD=
+RAYA_USER_USERNAME=user
+RAYA_USER_PASSWORD=
 EOF
 
 # cPanel Passenger restart

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Customer orders | Raya staff{% endblock %}
+{% block content %}
+<div class="wrap page">
+  <div class="row-between">
+    <div>
+      <p class="eyebrow">Restaurant staff</p>
+      <h1>Customer orders</h1>
+    </div>
+    <form method="post" action="{{ url_for('staff.logout') }}">
+      <button class="btn btn-ghost" type="submit">Sign out</button>
+    </form>
+  </div>
+  <p class="muted">These submissions are stored on this server and remain available if Square is unavailable.</p>
+
+  {% if orders %}
+  <div class="table-scroll">
+    <table class="staff-table">
+      <thead>
+        <tr>
+          <th>Received (UTC)</th>
+          <th>Order</th>
+          <th>Customer</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td>{{ order.created_at.replace('T', ' ') }}</td>
+          <td><a href="{{ url_for('staff.order_detail', order_id=order.id) }}">{{ order.id }}</a></td>
+          <td>{{ order.first_name }} {{ order.last_name }}</td>
+          <td>{{ order.dining_option|title }}</td>
+          <td><span class="badge {% if order.status == 'PAID' %}open{% endif %}">{{ order.status.replace('_', ' ') }}</span></td>
+          <td>{{ '$%.2f'|format(order.subtotal_cents / 100) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <p class="empty">No locally stored orders yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

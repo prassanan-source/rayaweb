@@ -86,6 +86,7 @@ def place_kitchen_order(inp: dict, square) -> dict:
         )
 
     display_name = f"{guest['firstName'].strip()} {guest['lastName'].strip()}"
+    local_order_id = str(inp.get("localOrderId") or "").strip()
     recipient = {
         "display_name": display_name,
         "phone_number": f"+1{phone}",
@@ -119,8 +120,12 @@ def place_kitchen_order(inp: dict, square) -> dict:
         "idempotency_key": str(uuid.uuid4()),
         "order": {
             "location_id": square.location_id(),
-            "reference_id": "raya-web",
-            "ticket_name": f"Raya Web - {display_name}",
+            "reference_id": local_order_id or "raya-web",
+            "ticket_name": (
+                f"{local_order_id} - {display_name}"
+                if local_order_id
+                else f"Raya Web - {display_name}"
+            ),
             "line_items": line_items,
             "fulfillments": [fulfillment],
         },
