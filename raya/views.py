@@ -5,18 +5,24 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from raya.bag import add_line, bag_count, bag_subtotal, read_bag, write_bag
 from raya.hours import status_copy
 from raya.menu import featured_dishes, filtered_categories, find_menu_item, format_price, item_id
+from raya.order_store import create_order, update_order
 from raya.restaurant import (
     formatted_address,
     full_address_lines,
     google_maps_embed_url,
     google_maps_url,
     restaurant,
-    toast_order_url,
+    square_online_configured,
+    square_order_url,
 )
-from raya.toast.client import load_confirmed_toast_order, toast_api, toast_is_configured
-from raya.toast.diagnose import credential_inventory, missing_credential_message
-from raya.toast.place_order import place_kitchen_order
-from raya.toast.ticket import guest_ticket_from_toast_order
+from raya.square.client import (
+    load_confirmed_square_order,
+    square_api,
+    square_is_configured,
+    square_order_is_paid,
+)
+from raya.square.diagnose import credential_inventory, missing_credential_message
+from raya.square.place_order import place_kitchen_order
 
 bp = Blueprint("main", __name__)
 
@@ -27,7 +33,7 @@ FAQS = [
     },
     {
         "q": "Do you offer pickup and delivery?",
-        "a": "Yes. Order pickup or delivery on Toast — orders go straight to the kitchen, with no marketplace commission. You can also call us.",
+        "a": "Yes. Build a pickup order here and pay securely on Square. On-Demand Delivery is available through our published Square Online store.",
     },
     {
         "q": "Where are you, and what areas do you deliver to?",
@@ -38,7 +44,7 @@ FAQS = [
     },
     {
         "q": "What are your hours?",
-        "a": f"Dine-in is {restaurant['hours']['display']} daily. Online ordering on Toast runs until 9:45 PM.",
+        "a": f"Dine-in is {restaurant['hours']['display']} daily. Online ordering runs until 9:45 PM.",
     },
     {
         "q": "Is there vegetarian food?",
@@ -62,7 +68,8 @@ def _ctx(**extra):
     base = {
         "restaurant": restaurant,
         "formatted_address": formatted_address(),
-        "toast_order_url": toast_order_url,
+        "square_order_url": square_order_url,
+        "square_online_configured": square_online_configured(),
         "status": status_copy(),
         "bag_count": bag_count(lines),
         "bag_lines": lines,
@@ -79,7 +86,8 @@ def inject_globals():
     return {
         "restaurant": restaurant,
         "formatted_address": formatted_address(),
-        "toast_order_url": toast_order_url,
+        "square_order_url": square_order_url,
+        "square_online_configured": square_online_configured(),
         "status": status_copy(),
         "bag_count": bag_count(),
     }
@@ -131,9 +139,16 @@ def order():
 @bp.get("/order/checkout")
 def checkout():
     dining = request.args.get("dining") or "pickup"
-    if dining not in {"pickup", "delivery"}:
-        dining = "pickup"
-    return render_template("checkout.html", dining=dining, **_ctx())
+    if dining == "delivery":
+        if square_online_configured():
+            return redirect(square_order_url("delivery"))
+        flash(
+            "Square On-Demand Delivery requires a published Square Online URL. "
+            "Set SQUARE_ORDER_URL after publishing the store.",
+            "error",
+        )
+        return redirect(url_for("main.order"))
+    return render_template("checkout.html", dining="pickup", **_ctx())
 
 
 @bp.post("/cart/add")
@@ -168,81 +183,101 @@ def cart_update():
 
 @bp.post("/order/place")
 def place_order():
-    dining_option = "delivery" if request.form.get("diningOption") == "delivery" else "pickup"
-    lines = [{"itemId": line["itemId"], "name": line["name"], "quantity": line["quantity"]} for line in read_bag()]
+    dining_option = "pickup"
+    lines = [
+        {
+            "itemId": line["itemId"],
+            "name": line["name"],
+            "price": line["price"],
+            "quantity": line["quantity"],
+        }
+        for line in read_bag()
+    ]
+    order_input = {
+        "diningOption": dining_option,
+        "guest": {
+            "firstName": request.form.get("firstName") or "",
+            "lastName": request.form.get("lastName") or "",
+            "phone": request.form.get("phone") or "",
+            "email": request.form.get("email") or "",
+        },
+        "notes": request.form.get("notes") or "",
+        "lines": lines,
+        "delivery": {
+            "address1": request.form.get("address1") or "",
+            "address2": request.form.get("address2") or "",
+            "city": request.form.get("city") or "",
+            "state": request.form.get("state") or "",
+            "zipCode": request.form.get("zipCode") or "",
+        }
+        if dining_option == "delivery"
+        else None,
+    }
+    local_order_id = create_order(order_input)
+    order_input["localOrderId"] = local_order_id
 
-    if not toast_is_configured():
-        flash(missing_credential_message(), "error")
+    if not square_is_configured():
+        error = missing_credential_message()
+        update_order(local_order_id, status="SQUARE_ERROR", square_error=error)
+        flash(f"Saved locally as {local_order_id}.\n\n{error}", "error")
         return redirect(url_for("main.checkout", dining=dining_option))
 
-    result = place_kitchen_order(
-        {
-            "diningOption": dining_option,
-            "guest": {
-                "firstName": request.form.get("firstName") or "",
-                "lastName": request.form.get("lastName") or "",
-                "phone": request.form.get("phone") or "",
-                "email": request.form.get("email") or "",
-            },
-            "notes": request.form.get("notes") or "",
-            "lines": lines,
-            "delivery": {
-                "address1": request.form.get("address1") or "",
-                "address2": request.form.get("address2") or "",
-                "city": request.form.get("city") or "",
-                "state": request.form.get("state") or "",
-                "zipCode": request.form.get("zipCode") or "",
-            }
-            if dining_option == "delivery"
-            else None,
-        },
-        toast_api,
-    )
+    result = place_kitchen_order(order_input, square_api)
 
     if not result.get("ok"):
-        flash(f"{result.get('error')}\n\n{credential_inventory()}", "error")
+        error = str(result.get("error") or "Square checkout failed.")
+        update_order(local_order_id, status="SQUARE_ERROR", square_error=error)
+        flash(
+            f"Saved locally as {local_order_id}.\n\n{error}\n\n{credential_inventory()}",
+            "error",
+        )
         return redirect(url_for("main.checkout", dining=dining_option))
 
+    update_order(
+        local_order_id,
+        status="AWAITING_PAYMENT",
+        square_order_id=result["orderId"],
+        square_checkout_url=result["checkoutUrl"],
+    )
     write_bag([])
-    return redirect(url_for("main.confirmed", guid=result["toastGuid"]))
+    return redirect(result["checkoutUrl"])
 
 
 @bp.get("/order/confirmed")
 def confirmed():
-    toast_guid = (request.args.get("guid") or "").strip()
-    if not toast_guid:
+    order_id = (request.args.get("guid") or "").strip()
+    if not order_id:
         return render_template(
             "confirmed.html",
             ok=False,
             title="No kitchen ticket yet",
-            body="An order number is only shown after Toast accepts the order. We never mint RY numbers from this page’s query string.",
+            body="An order is only confirmed after payment on Square. No order number is created from this page’s query string.",
             **_ctx(),
         )
 
     try:
-        order = load_confirmed_toast_order(toast_guid)
-        display_number = guest_ticket_from_toast_order(order)
+        order = load_confirmed_square_order(order_id)
     except Exception:
         return render_template(
             "confirmed.html",
             ok=False,
-            title="Could not verify with Toast",
-            body="We could not load this ticket from Toast, so no order number is shown. Call the restaurant if you need help.",
+            title="Could not verify with Square",
+            body="We could not load this ticket from Square, so no order number is shown. Call the restaurant if you need help.",
             **_ctx(),
         )
 
-    if not display_number:
+    if not square_order_is_paid(order):
         return render_template(
             "confirmed.html",
             ok=False,
-            title="Toast did not confirm this order",
-            body="The kitchen ticket is not in Toast for 7150 Village Pkwy, so we cannot show an order number. If you think you were charged, call the restaurant.",
+            title="Payment not confirmed",
+            body="Square has not marked this order paid, so it has not been sent to the Square POS or kitchen. Complete payment on Square, or call the restaurant if you were charged.",
             **_ctx(),
         )
 
     return render_template(
         "confirmed.html",
         ok=True,
-        display_number=display_number,
+        order_id=order_id,
         **_ctx(),
     )

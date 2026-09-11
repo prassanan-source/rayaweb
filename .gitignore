@@ -5,6 +5,7 @@ __pycache__/
 venv/
 .env
 .env.local
+instance/
 .pytest_cache/
 *.egg-info/
 rayaweb.zip

@@ -14,7 +14,7 @@
     <h1>{{ restaurant.headline }}</h1>
     <p class="lede">Dum biryani on seeraga samba rice, dosas off the stone, and Chettinad heat — cooked for Dublin tables and Tri-Valley takeout.</p>
     <div class="row">
-      <a class="btn" href="{{ toast_order_url() }}" target="_blank" rel="noopener noreferrer">Order on Toast</a>
+      <a class="btn" href="{{ url_for('main.menu') }}">Order online</a>
       <a class="btn btn-ghost" href="{{ url_for('main.menu') }}">See the menu</a>
       <span class="badge {% if status.open %}open{% endif %}">{{ status.label }} · {{ status.detail }}</span>
     </div>
@@ -46,7 +46,7 @@
     <p class="eyebrow">Our story</p>
     <h2>A taste of tradition on Village Parkway</h2>
     <p class="muted">At Raya, every dish tells a South Indian kitchen story. We slow-cook biryanis with fragrant seeraga samba rice, hand-ground spice blends, and techniques passed through generations. From the fiery crunch of Chicken 65 to the depth of mutton biryani, each plate is built with care, heat, and the warmth of home.</p>
-    <p class="muted">Come in for dosa and filter coffee, take a combo for the table, or order on Toast for pickup and delivery. Welcome to our table.</p>
+    <p class="muted">Come in for dosa and filter coffee, take a combo for the table, or order online for pickup or delivery. Welcome to our table.</p>
     <p><a href="{{ url_for('main.visit') }}">Hours, parking &amp; directions →</a></p>
   </div>
 </section>
@@ -80,13 +80,17 @@
 <section class="wrap two-col">
   <article class="panel">
     <h3>Pickup</h3>
-    <p class="muted">Skip the line. Order on Toast and we’ll have it ready at 7150 Village Pkwy.</p>
-    <a class="btn" href="{{ toast_order_url('pickup') }}" target="_blank" rel="noopener noreferrer">Order pickup</a>
+    <p class="muted">Skip the line. Order pickup here, pay securely on Square, and we’ll have it ready at 7150 Village Pkwy.</p>
+    <a class="btn" href="{{ url_for('main.menu') }}">Order pickup</a>
   </article>
   <article class="panel">
     <h3>Delivery</h3>
-    <p class="muted">Commission-free delivery through Toast across {{ restaurant.service_area[:4]|join(', ') }}, and the rest of the Tri-Valley.</p>
-    <a class="btn" href="{{ toast_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Order delivery</a>
+    <p class="muted">Delivery across {{ restaurant.service_area[:4]|join(', ') }}, and the rest of the Tri-Valley.</p>
+    {% if square_online_configured %}
+      <a class="btn" href="{{ square_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Order delivery</a>
+    {% else %}
+      <a class="btn" href="{{ restaurant.phone_href }}">Call for delivery</a>
+    {% endif %}
   </article>
 </section>
 

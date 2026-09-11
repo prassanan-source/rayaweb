@@ -232,6 +232,15 @@ legend { font-size: 1.6rem; color: var(--gold); margin-bottom: 0.7rem; }
 .pre-wrap { white-space: pre-wrap; }
 .flash-stack { padding-top: 1rem; }
 .danger { color: var(--danger); }
+.table-scroll { overflow-x: auto; margin-top: 1.5rem; }
+.staff-table { width: 100%; border-collapse: collapse; }
+.staff-table th, .staff-table td {
+  padding: 0.8rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  white-space: nowrap;
+}
+.staff-table th { color: var(--gold); font-size: 0.8rem; text-transform: uppercase; }
 
 .site-footer { margin-top: auto; background: #120c09; border-top: 1px solid var(--line); }
 .footer-grid { display: grid; gap: 1.8rem; padding: 3rem 0; }

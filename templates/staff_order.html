@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ order.id }} | Raya staff{% endblock %}
+{% block content %}
+<div class="wrap page">
+  <p><a href="{{ url_for('staff.orders') }}">← All orders</a></p>
+  <div class="row-between">
+    <div>
+      <p class="eyebrow">{{ order.dining_option|title }} · {{ order.status.replace('_', ' ') }}</p>
+      <h1>{{ order.id }}</h1>
+      <p class="muted">Received {{ order.created_at.replace('T', ' ') }} UTC</p>
+    </div>
+    {% if order.square_order_id %}
+    <form method="post" action="{{ url_for('staff.refresh_order', order_id=order.id) }}">
+      <button class="btn btn-ghost" type="submit">Refresh Square status</button>
+    </form>
+    {% endif %}
+  </div>
+
+  <div class="two-col">
+    <section class="panel">
+      <h2>Customer</h2>
+      <p>{{ order.first_name }} {{ order.last_name }}</p>
+      <p><a href="tel:{{ order.phone }}">{{ order.phone }}</a></p>
+      <p><a href="mailto:{{ order.email }}">{{ order.email }}</a></p>
+      {% if order.dining_option == 'delivery' %}
+        <h3>Delivery address</h3>
+        <p>
+          {{ order.address1 }}{% if order.address2 %}<br>{{ order.address2 }}{% endif %}<br>
+          {{ order.city }}, {{ order.state }} {{ order.zip_code }}
+        </p>
+      {% endif %}
+      {% if order.notes %}
+        <h3>Notes</h3>
+        <p class="pre-wrap">{{ order.notes }}</p>
+      {% endif %}
+    </section>
+
+    <section class="panel ticket">
+      <h2>Items</h2>
+      <ul class="ticket-lines">
+        {% for line in order.lines %}
+        <li>
+          <span>{{ line.quantity }} × {{ line.name }}</span>
+          <span>{{ '$%.2f'|format(line.price * line.quantity) }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      <p class="row-between">
+        <strong>Subtotal</strong>
+        <strong>{{ '$%.2f'|format(order.subtotal_cents / 100) }}</strong>
+      </p>
+      {% if order.square_order_id %}
+        <p class="muted small">Square order: {{ order.square_order_id }}</p>
+      {% endif %}
+      {% if order.square_error %}
+        <p class="danger pre-wrap">{{ order.square_error }}</p>
+      {% endif %}
+    </section>
+  </div>
+</div>
+{% endblock %}
