@@ -55,7 +55,7 @@ def _square_fetch(path: str, method: str = "GET", json_body=None, params=None) -
             headers={
                 "Content-Type": "application/json",
                 "Authorization": f"Bearer {cfg['access_token']}",
-                "Square-Version": "2024-12-18",
+                "Square-Version": Config.SQUARE_API_VERSION,
             },
             timeout=(10, 60),
         )

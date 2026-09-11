@@ -46,7 +46,7 @@
     <p class="eyebrow">Our story</p>
     <h2>A taste of tradition on Village Parkway</h2>
     <p class="muted">At Raya, every dish tells a South Indian kitchen story. We slow-cook biryanis with fragrant seeraga samba rice, hand-ground spice blends, and techniques passed through generations. From the fiery crunch of Chicken 65 to the depth of mutton biryani, each plate is built with care, heat, and the warmth of home.</p>
-    <p class="muted">Come in for dosa and filter coffee, take a combo for the table, or order online for pickup. Welcome to our table.</p>
+    <p class="muted">Come in for dosa and filter coffee, take a combo for the table, or order online for pickup or delivery. Welcome to our table.</p>
     <p><a href="{{ url_for('main.visit') }}">Hours, parking &amp; directions →</a></p>
   </div>
 </section>
@@ -86,11 +86,7 @@
   <article class="panel">
     <h3>Delivery</h3>
     <p class="muted">Delivery across {{ restaurant.service_area[:4]|join(', ') }}, and the rest of the Tri-Valley.</p>
-    {% if square_online_configured %}
-      <a class="btn" href="{{ square_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Order delivery</a>
-    {% else %}
-      <a class="btn" href="{{ restaurant.phone_href }}">Call for delivery</a>
-    {% endif %}
+    <a class="btn" href="{{ url_for('main.checkout', dining='delivery') }}">Order delivery</a>
   </article>
 </section>
 

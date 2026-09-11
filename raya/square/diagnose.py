@@ -23,6 +23,7 @@ def credential_inventory() -> str:
             files_line,
             "Use KEY=value (equals), not KEY: value (colon).",
             f"SQUARE_API_HOST: {square_host()}",
+            f"SQUARE_API_VERSION: {Config.SQUARE_API_VERSION}",
             f"SQUARE_ACCESS_TOKEN: {mask(Config.SQUARE_ACCESS_TOKEN, 'secret')}",
             f"SQUARE_LOCATION_ID: {mask(Config.SQUARE_LOCATION_ID, 'id')}",
         ]

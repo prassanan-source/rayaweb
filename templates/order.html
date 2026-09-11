@@ -4,7 +4,7 @@
 <div class="wrap page">
   <p class="eyebrow">Square</p>
   <h1>Order for pickup or delivery</h1>
-  <p class="lede muted">Build your order here, then pay on Square’s secure checkout. Paid pickup orders are sent to {{ restaurant.square.location_name }} in Square POS.</p>
+  <p class="lede muted">Build your pickup or delivery order here, then pay on Square’s secure checkout.</p>
   <p class="muted">Online ordering {{ restaurant.hours.online_display }} · <span class="badge {% if status.open %}open{% endif %}">{{ status.label }}</span></p>
 
   <div class="two-col">
@@ -18,11 +18,7 @@
       <p class="muted">Card checkout runs on Square’s branded ordering page for this location — that is the channel that fires tickets into the POS.</p>
       <div class="row">
         <a class="btn" href="{{ url_for('main.menu') }}">Pickup</a>
-        {% if square_online_configured %}
-          <a class="btn btn-ghost" href="{{ square_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Delivery</a>
-        {% else %}
-          <a class="btn btn-ghost" href="{{ restaurant.phone_href }}">Call for delivery</a>
-        {% endif %}
+        <a class="btn btn-ghost" href="{{ url_for('main.checkout', dining='delivery') }}">Delivery</a>
       </div>
     </article>
   </div>
@@ -30,7 +26,7 @@
   <aside class="panel dashed">
     <h2>Prefer to call?</h2>
     <p class="muted">Phone orders at <a href="{{ restaurant.phone_href }}">{{ restaurant.phone }}</a>. Catering — email <a href="{{ restaurant.email_href }}">{{ restaurant.email }}</a>.</p>
-    <p><a href="{{ url_for('main.menu') }}">Start an online pickup order</a></p>
+    <p><a href="{{ url_for('main.menu') }}">Start an online order</a></p>
   </aside>
 </div>
 {% endblock %}

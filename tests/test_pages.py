@@ -29,6 +29,26 @@ def test_unconfigured_square_online_url_falls_back_to_web_menu(monkeypatch):
     assert square_order_url() == "/menu"
 
 
+def test_delivery_checkout_shows_address_fields():
+    app = create_app()
+    client = app.test_client()
+    with client.session_transaction() as session:
+        session["raya_bag"] = [
+            {
+                "itemId": "chicken-65",
+                "name": "Chicken 65",
+                "price": 13.99,
+                "quantity": 1,
+            }
+        ]
+
+    response = client.get("/order/checkout?dining=delivery")
+
+    assert response.status_code == 200
+    assert b'value="delivery" checked' in response.data
+    assert b'name="address1"' in response.data
+
+
 def test_add_to_bag_then_checkout():
     app = create_app()
     client = app.test_client()

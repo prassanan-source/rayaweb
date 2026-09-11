@@ -5,7 +5,7 @@
   {% if ok %}
     <p class="eyebrow">Square payment confirmed</p>
     <h1>Paid order placed!</h1>
-    <p>Your paid pickup order has been sent to Square.</p>
+    <p>Your paid order has been sent to Square.</p>
     <p class="muted">Pick up at {{ formatted_address }}</p>
     <p class="muted small">Square order {{ order_id }} · {{ restaurant.square.location_name }}</p>
     <p><a class="btn btn-ghost" href="{{ url_for('main.menu') }}">Back to menu</a></p>

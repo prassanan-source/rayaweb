@@ -60,6 +60,7 @@ Needed in `/home/rayarest/rayaweb/.env` as **equals**, not colons:
 SQUARE_ACCESS_TOKEN=EAAA...
 SQUARE_LOCATION_ID=L...
 SQUARE_API_HOST=https://connect.squareup.com
+SQUARE_API_VERSION=2026-08-19
 SQUARE_ORDER_URL=           # optional, only if Square Online is published
 ```
 
@@ -122,6 +123,7 @@ grep -q SQUARE_ACCESS_TOKEN .env 2>/dev/null || cat >> .env << 'EOF'
 SQUARE_ACCESS_TOKEN=
 SQUARE_LOCATION_ID=
 SQUARE_API_HOST=https://connect.squareup.com
+SQUARE_API_VERSION=2026-08-19
 SQUARE_ORDER_URL=
 EOF
 

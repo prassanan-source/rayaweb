@@ -25,16 +25,6 @@ def place_kitchen_order(inp: dict, square) -> dict:
             "code": "SQUARE_NOT_CONFIGURED",
             "error": "Square is not connected. No kitchen ticket was created.",
         }
-    if inp.get("diningOption") == "delivery":
-        return {
-            "ok": False,
-            "code": "SQUARE_DELIVERY_UNSUPPORTED",
-            "error": (
-                "Delivery must be placed through Square Online. Square does not show "
-                "API-created delivery orders in POS without delivery partner approval."
-            ),
-        }
-
     lines = inp.get("lines") or []
     if not lines or any(int(line.get("quantity") or 0) < 1 for line in lines):
         return {"ok": False, "code": "INVALID_CART", "error": "Add at least one item before placing an order."}
@@ -57,6 +47,17 @@ def place_kitchen_order(inp: dict, square) -> dict:
             "code": "INVALID_GUEST",
             "error": "Name, a 10-digit phone number, and email are required.",
         }
+    if inp.get("diningOption") == "delivery":
+        delivery = inp.get("delivery") or {}
+        if not all(
+            (delivery.get(key) or "").strip()
+            for key in ("address1", "city", "state", "zipCode")
+        ):
+            return {
+                "ok": False,
+                "code": "INVALID_GUEST",
+                "error": "Delivery needs a full street address.",
+            }
 
     try:
         fulfillment_type = square.resolve_fulfillment_type(inp["diningOption"])

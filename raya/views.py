@@ -32,7 +32,7 @@ FAQS = [
     },
     {
         "q": "Do you offer pickup and delivery?",
-        "a": "Yes. Build a pickup order here and pay securely on Square. For delivery, use the configured Square Online store or call us.",
+        "a": "Yes. Build a pickup or delivery order here, then pay securely on Square.",
     },
     {
         "q": "Where are you, and what areas do you deliver to?",
@@ -43,7 +43,7 @@ FAQS = [
     },
     {
         "q": "What are your hours?",
-        "a": f"Dine-in is {restaurant['hours']['display']} daily. Online pickup ordering runs until 9:45 PM.",
+        "a": f"Dine-in is {restaurant['hours']['display']} daily. Online ordering runs until 9:45 PM.",
     },
     {
         "q": "Is there vegetarian food?",
@@ -137,7 +137,10 @@ def order():
 
 @bp.get("/order/checkout")
 def checkout():
-    return render_template("checkout.html", dining="pickup", **_ctx())
+    dining = request.args.get("dining") or "pickup"
+    if dining not in {"pickup", "delivery"}:
+        dining = "pickup"
+    return render_template("checkout.html", dining=dining, **_ctx())
 
 
 @bp.post("/cart/add")
@@ -172,7 +175,9 @@ def cart_update():
 
 @bp.post("/order/place")
 def place_order():
-    dining_option = "pickup"
+    dining_option = (
+        "delivery" if request.form.get("diningOption") == "delivery" else "pickup"
+    )
     lines = [{"itemId": line["itemId"], "name": line["name"], "quantity": line["quantity"]} for line in read_bag()]
 
     if not square_is_configured():
