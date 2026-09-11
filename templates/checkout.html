@@ -2,12 +2,12 @@
 {% block title %}Checkout | Raya Dublin{% endblock %}
 {% block content %}
 <div class="wrap page">
-  <p class="eyebrow">Toast kitchen</p>
+  <p class="eyebrow">Square kitchen</p>
   <h1>Checkout</h1>
-  <p class="lede muted">Place order posts this bag to Toast for Raya — 7150 Village Pkwy. If Toast does not accept and store the ticket, you will not get an RY number and the restaurant will not see an order.</p>
+  <p class="lede muted">Place order posts this bag to Square for Raya — 7150 Village Pkwy. If Square does not accept and store the ticket, you will not get an RY number and the restaurant will not see an order.</p>
 
   {% if not bag_lines %}
-    <p class="empty">Your bag is empty. Add dishes on the menu, then return here to send them to Toast.</p>
+    <p class="empty">Your bag is empty. Add dishes on the menu, then return here to send them to Square.</p>
     <p><a class="btn" href="{{ url_for('main.menu') }}">Browse the menu</a></p>
   {% else %}
   <form class="checkout" method="post" action="{{ url_for('main.place_order') }}">
@@ -58,9 +58,9 @@
         {% endfor %}
       </ul>
       <p class="row-between"><span>Subtotal</span><span class="gold">{{ format_price(bag_subtotal) }}</span></p>
-      <p class="muted small">We do not invent an order number here. The ticket is posted to Toast for 7150 Village Pkwy; only if Toast stores the order and returns a check number do we show RY-xxxx.</p>
+      <p class="muted small">We do not invent an order number here. The ticket is posted to Square for 7150 Village Pkwy; only if Square stores the order and returns a ticket name do we show RY-xxxx.</p>
       <button class="btn btn-block" type="submit">Place order</button>
-      <p class="muted small"><a href="{{ toast_order_url(dining) }}" target="_blank" rel="noopener noreferrer">Finish on Toast instead</a></p>
+      <p class="muted small"><a href="{{ square_order_url(dining) }}" target="_blank" rel="noopener noreferrer">Finish on Square instead</a></p>
     </aside>
   </form>
   {% endif %}

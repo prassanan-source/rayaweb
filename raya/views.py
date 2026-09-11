@@ -11,12 +11,12 @@ from raya.restaurant import (
     google_maps_embed_url,
     google_maps_url,
     restaurant,
-    toast_order_url,
+    square_order_url,
 )
-from raya.toast.client import load_confirmed_toast_order, toast_api, toast_is_configured
-from raya.toast.diagnose import credential_inventory, missing_credential_message
-from raya.toast.place_order import place_kitchen_order
-from raya.toast.ticket import guest_ticket_from_toast_order
+from raya.square.client import load_confirmed_square_order, square_api, square_is_configured
+from raya.square.diagnose import credential_inventory, missing_credential_message
+from raya.square.place_order import place_kitchen_order
+from raya.square.ticket import guest_ticket_from_square_order
 
 bp = Blueprint("main", __name__)
 
@@ -27,7 +27,7 @@ FAQS = [
     },
     {
         "q": "Do you offer pickup and delivery?",
-        "a": "Yes. Order pickup or delivery on Toast — orders go straight to the kitchen, with no marketplace commission. You can also call us.",
+        "a": "Yes. Order pickup or delivery on Square — orders go straight to the kitchen, with no marketplace commission. You can also call us.",
     },
     {
         "q": "Where are you, and what areas do you deliver to?",
@@ -38,7 +38,7 @@ FAQS = [
     },
     {
         "q": "What are your hours?",
-        "a": f"Dine-in is {restaurant['hours']['display']} daily. Online ordering on Toast runs until 9:45 PM.",
+        "a": f"Dine-in is {restaurant['hours']['display']} daily. Online ordering on Square runs until 9:45 PM.",
     },
     {
         "q": "Is there vegetarian food?",
@@ -62,7 +62,7 @@ def _ctx(**extra):
     base = {
         "restaurant": restaurant,
         "formatted_address": formatted_address(),
-        "toast_order_url": toast_order_url,
+        "square_order_url": square_order_url,
         "status": status_copy(),
         "bag_count": bag_count(lines),
         "bag_lines": lines,
@@ -79,7 +79,7 @@ def inject_globals():
     return {
         "restaurant": restaurant,
         "formatted_address": formatted_address(),
-        "toast_order_url": toast_order_url,
+        "square_order_url": square_order_url,
         "status": status_copy(),
         "bag_count": bag_count(),
     }
@@ -171,7 +171,7 @@ def place_order():
     dining_option = "delivery" if request.form.get("diningOption") == "delivery" else "pickup"
     lines = [{"itemId": line["itemId"], "name": line["name"], "quantity": line["quantity"]} for line in read_bag()]
 
-    if not toast_is_configured():
+    if not square_is_configured():
         flash(missing_credential_message(), "error")
         return redirect(url_for("main.checkout", dining=dining_option))
 
@@ -196,7 +196,7 @@ def place_order():
             if dining_option == "delivery"
             else None,
         },
-        toast_api,
+        square_api,
     )
 
     if not result.get("ok"):
@@ -204,30 +204,30 @@ def place_order():
         return redirect(url_for("main.checkout", dining=dining_option))
 
     write_bag([])
-    return redirect(url_for("main.confirmed", guid=result["toastGuid"]))
+    return redirect(url_for("main.confirmed", guid=result["orderId"]))
 
 
 @bp.get("/order/confirmed")
 def confirmed():
-    toast_guid = (request.args.get("guid") or "").strip()
-    if not toast_guid:
+    order_id = (request.args.get("guid") or "").strip()
+    if not order_id:
         return render_template(
             "confirmed.html",
             ok=False,
             title="No kitchen ticket yet",
-            body="An order number is only shown after Toast accepts the order. We never mint RY numbers from this page’s query string.",
+            body="An order number is only shown after Square accepts the order. We never mint RY numbers from this page’s query string.",
             **_ctx(),
         )
 
     try:
-        order = load_confirmed_toast_order(toast_guid)
-        display_number = guest_ticket_from_toast_order(order)
+        order = load_confirmed_square_order(order_id)
+        display_number = guest_ticket_from_square_order(order)
     except Exception:
         return render_template(
             "confirmed.html",
             ok=False,
-            title="Could not verify with Toast",
-            body="We could not load this ticket from Toast, so no order number is shown. Call the restaurant if you need help.",
+            title="Could not verify with Square",
+            body="We could not load this ticket from Square, so no order number is shown. Call the restaurant if you need help.",
             **_ctx(),
         )
 
@@ -235,8 +235,8 @@ def confirmed():
         return render_template(
             "confirmed.html",
             ok=False,
-            title="Toast did not confirm this order",
-            body="The kitchen ticket is not in Toast for 7150 Village Pkwy, so we cannot show an order number. If you think you were charged, call the restaurant.",
+            title="Square did not confirm this order",
+            body="The kitchen ticket is not in Square for 7150 Village Pkwy, so we cannot show an order number. If you think you were charged, call the restaurant.",
             **_ctx(),
         )
 

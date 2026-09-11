@@ -2,23 +2,23 @@
 {% block title %}Order online | Raya Dublin{% endblock %}
 {% block content %}
 <div class="wrap page">
-  <p class="eyebrow">Toast</p>
+  <p class="eyebrow">Square</p>
   <h1>Order for pickup or delivery</h1>
-  <p class="lede muted">An RY ticket number is issued only after Toast stores the order for {{ restaurant.toast.location_name }}. If Toast does not accept the ticket, you will not see “Order placed” and the kitchen will not see a ticket.</p>
-  <p class="muted">Online ordering {{ restaurant.hours.toast_display }} · <span class="badge {% if status.open %}open{% endif %}">{{ status.label }}</span></p>
+  <p class="lede muted">An RY ticket number is issued only after Square stores the order for {{ restaurant.square.location_name }}. If Square does not accept the ticket, you will not see “Order placed” and the kitchen will not see a ticket.</p>
+  <p class="muted">Online ordering {{ restaurant.hours.online_display }} · <span class="badge {% if status.open %}open{% endif %}">{{ status.label }}</span></p>
 
   <div class="two-col">
     <article class="panel">
       <h2>Order on this site</h2>
-      <p class="muted">Add dishes from the menu, then checkout. We POST the ticket to Toast and only show a number after Toast returns the same order on GET.</p>
+      <p class="muted">Add dishes from the menu, then checkout. We POST the ticket to Square and only show a number after Square returns the same order on GET.</p>
       <a class="btn" href="{{ url_for('main.menu') }}">Start with the menu</a>
     </article>
     <article class="panel">
-      <h2>Pay on Toast</h2>
-      <p class="muted">Card checkout runs on Toast’s branded ordering page for this location — that is the channel that fires tickets into the POS.</p>
+      <h2>Pay on Square</h2>
+      <p class="muted">Card checkout runs on Square’s branded ordering page for this location — that is the channel that fires tickets into the POS.</p>
       <div class="row">
-        <a class="btn" href="{{ toast_order_url('pickup') }}" target="_blank" rel="noopener noreferrer">Pickup</a>
-        <a class="btn btn-ghost" href="{{ toast_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Delivery</a>
+        <a class="btn" href="{{ square_order_url('pickup') }}" target="_blank" rel="noopener noreferrer">Pickup</a>
+        <a class="btn btn-ghost" href="{{ square_order_url('delivery') }}" target="_blank" rel="noopener noreferrer">Delivery</a>
       </div>
     </article>
   </div>
@@ -26,7 +26,7 @@
   <aside class="panel dashed">
     <h2>Prefer to call?</h2>
     <p class="muted">Phone orders at <a href="{{ restaurant.phone_href }}">{{ restaurant.phone }}</a>. Catering — email <a href="{{ restaurant.email_href }}">{{ restaurant.email }}</a>.</p>
-    <p><a href="{{ toast_order_url() }}" target="_blank" rel="noopener noreferrer">Open Toast Online Ordering</a></p>
+    <p><a href="{{ square_order_url() }}" target="_blank" rel="noopener noreferrer">Open Square Online Ordering</a></p>
   </aside>
 </div>
 {% endblock %}

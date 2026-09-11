@@ -20,14 +20,14 @@ def create_app(config_object: type[Config] | None = None) -> Flask:
         from flask import render_template
 
         from raya.hours import status_copy
-        from raya.restaurant import formatted_address, restaurant, toast_order_url
+        from raya.restaurant import formatted_address, restaurant, square_order_url
 
         return (
             render_template(
                 "404.html",
                 restaurant=restaurant,
                 formatted_address=formatted_address(),
-                toast_order_url=toast_order_url,
+                square_order_url=square_order_url,
                 status=status_copy(),
                 bag_count=0,
             ),

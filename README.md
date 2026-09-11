@@ -1,25 +1,25 @@
 # Raya — South Indian restaurant site (Flask)
 
-Python / Flask website for **Raya** at 7150 Village Pkwy, Dublin, CA. Intended host: [rayaweb.hemashaninc.com](https://rayaweb.hemashaninc.com). On the server this project lives at `/home/hemashan/rayaweb`.
+Python / Flask website for **Raya** at 7150 Village Pkwy, Dublin, CA. Intended host: [rayaweb.hemashaninc.com](https://rayaweb.hemashaninc.com). On the server this project lives at `/home/hemashan/rayaweb` (or `/rayaweb` on `rayarest@rayarestaurant.com`).
 
 This is **not** a Node.js app. Run it with Python 3 and Flask.
 
-Kitchen tickets go to Toast for **Raya - 7150 Village Pkwy** (`82a7a0d7-cf2d-4563-b767-0ea0622c5e2f`).
+Kitchen tickets go to Square for **Raya - 7150 Village Pkwy**.
 
 ## Order numbers
 
-An `RY-` number is **never** created locally. Checkout POSTs the bag to Toast, then GETs that same order GUID back. Only if Toast returns the stored check number do we show:
+An `RY-` number is **never** created locally. Checkout POSTs the bag to Square, then GETs that same order ID back. Only if Square returns the stored order do we show:
 
 > Order placed! Your order is live in our kitchen. Pick up at 7150 Village Pkwy, Dublin CA  
 > RY-1004
 
-If Toast rejects the POST, or GET cannot load the order, the guest sees an error and **no ticket number**. Visiting `/order/confirmed` without a Toast GUID, or with a GUID Toast does not have, also shows no number.
+If Square rejects the POST, or GET cannot load the order, the guest sees an error and **no ticket number**. Visiting `/order/confirmed` without a Square order ID, or with an ID Square does not have, also shows no number.
 
 ## What’s included
 
 - Home, full menu with bag, checkout, visit (map + hours)
-- Toast-verified confirmation page
-- Branded Toast Online Ordering fallback: `https://order.toasttab.com/online/raya-7150-village-pkwy`
+- Square-verified confirmation page
+- Branded Square Online Ordering fallback: `https://raya-7150-village-pkwy.square.site` (override with `SQUARE_ORDER_URL`)
 
 ## Run locally
 
@@ -30,7 +30,7 @@ python3 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
-# fill TOAST_CLIENT_ID and TOAST_CLIENT_SECRET
+# fill SQUARE_ACCESS_TOKEN and SQUARE_LOCATION_ID
 python -m flask --app raya run --host 0.0.0.0 --port 43127
 ```
 
@@ -43,29 +43,29 @@ source .venv/bin/activate
 pytest
 ```
 
-## Toast
+## Square
 
 | | |
 | --- | --- |
 | Location | Raya - 7150 Village Pkwy |
-| Restaurant GUID | `82a7a0d7-cf2d-4563-b767-0ea0622c5e2f` |
-| Branded ordering | `https://order.toasttab.com/online/raya-7150-village-pkwy` |
-| API host | `https://ws-api.toasttab.com` |
+| Branded ordering | `https://raya-7150-village-pkwy.square.site` |
+| API host | `https://connect.squareup.com` |
 
 Needed in `.env` for on-site checkout to reach the POS:
 
 ```
-TOAST_CLIENT_ID=
-TOAST_CLIENT_SECRET=
-TOAST_RESTAURANT_GUID=82a7a0d7-cf2d-4563-b767-0ea0622c5e2f
-TOAST_API_HOST=https://ws-api.toasttab.com
+SQUARE_ACCESS_TOKEN=
+SQUARE_LOCATION_ID=
+SQUARE_API_HOST=https://connect.squareup.com
+SQUARE_SITE_SLUG=raya-7150-village-pkwy
+SQUARE_ORDER_URL=
 ```
 
-Create those credentials in Toast Web (Manage integrations) with `orders.orders:write`, `menus.channel:read`, and `config:read`. Without them, checkout will not invent a ticket — it tells the guest to finish on Toast instead.
+Create those credentials in the Square Developer Dashboard with `ORDERS_WRITE`, `ORDERS_READ`, and `ITEMS_READ`. Without them, checkout will not invent a ticket — it tells the guest to finish on Square instead.
 
 ## Deploy to the server
 
-Copy the project to `/home/hemashan/rayaweb`, then:
+Copy the project to `/home/hemashan/rayaweb` (or `/rayaweb`), then:
 
 ```bash
 cd /home/hemashan/rayaweb
@@ -82,4 +82,4 @@ Point nginx for `rayaweb.hemashaninc.com` at that process.
 - 7150 Village Pkwy, Dublin, CA 94568
 - (925) 235-3672
 - rayacuisines@gmail.com
-- Open daily 11:30 AM – 10:00 PM (Toast until 9:45 PM)
+- Open daily 11:30 AM – 10:00 PM (Square until 9:45 PM)

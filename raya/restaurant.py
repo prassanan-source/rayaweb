@@ -25,8 +25,8 @@ restaurant = {
         "open": "11:30",
         "close": "22:00",
         "display": "11:30 AM – 10:00 PM",
-        "toast_close": "21:45",
-        "toast_display": "11:30 AM – 9:45 PM",
+        "online_close": "21:45",
+        "online_display": "11:30 AM – 9:45 PM",
     },
     "service_area": [
         "Dublin",
@@ -40,9 +40,9 @@ restaurant = {
         "Hayward",
         "Sunol",
     ],
-    "toast": {
-        "guid": Config.TOAST_RESTAURANT_GUID,
-        "slug": Config.TOAST_SLUG,
+    "square": {
+        "location_id": Config.SQUARE_LOCATION_ID,
+        "slug": Config.SQUARE_SITE_SLUG,
         "location_name": "Raya - 7150 Village Pkwy",
     },
 }
@@ -58,12 +58,12 @@ def full_address_lines() -> list[str]:
     return [addr["line1"], f"{addr['city']}, {addr['state']} {addr['zip']}", addr["country"]]
 
 
-def toast_order_url(mode: str | None = None) -> str:
-    base = f"https://order.toasttab.com/online/{restaurant['toast']['slug']}"
+def square_order_url(mode: str | None = None) -> str:
+    base = (Config.SQUARE_ORDER_URL or "").rstrip("/") or f"https://{restaurant['square']['slug']}.square.site"
     if mode == "pickup":
-        return f"{base}?diningOption=takeout"
+        return f"{base}?fulfillment=PICKUP"
     if mode == "delivery":
-        return f"{base}?diningOption=delivery"
+        return f"{base}?fulfillment=DELIVERY"
     return base
 
 

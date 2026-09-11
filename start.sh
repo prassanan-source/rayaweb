@@ -26,7 +26,7 @@ python -m pip install -r requirements.txt
 
 if [ ! -f .env ] && [ -f .env.example ]; then
   cp .env.example .env
-  echo "Copied .env.example to .env — add Toast keys if you want kitchen tickets."
+  echo "Copied .env.example to .env — add Square keys if you want kitchen tickets."
 fi
 
 echo "Starting Raya (Flask) at http://127.0.0.1:43127"

@@ -26,10 +26,10 @@ def is_open_now(now: datetime | None = None) -> bool:
     return _parse_hm(restaurant["hours"]["open"]) <= minutes < _parse_hm(restaurant["hours"]["close"])
 
 
-def is_toast_ordering_open(now: datetime | None = None) -> bool:
+def is_online_ordering_open(now: datetime | None = None) -> bool:
     minutes = dublin_parts(now)["minutes"]
     return _parse_hm(restaurant["hours"]["open"]) <= minutes < _parse_hm(
-        restaurant["hours"]["toast_close"]
+        restaurant["hours"]["online_close"]
     )
 
 
