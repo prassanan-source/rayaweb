@@ -81,3 +81,17 @@ def test_submission_is_saved_before_square_is_called(tmp_path, monkeypatch):
         assert saved["address1"] == "1 Main St"
         assert saved["lines"][0]["name"] == "Chicken 65"
         assert saved["subtotal_cents"] == 2798
+
+    client.post(
+        "/staff/login",
+        data={"username": "admin", "password": "admin-pass"},
+    )
+    listing = client.get("/staff/orders")
+    assert saved["id"].encode() in listing.data
+    assert b"Asha Kumar" in listing.data
+
+    detail = client.get(f"/staff/orders/{saved['id']}")
+    assert detail.status_code == 200
+    assert b"asha@example.com" in detail.data
+    assert b"1 Main St" in detail.data
+    assert b"Chicken 65" in detail.data
