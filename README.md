@@ -51,14 +51,21 @@ pytest
 | Branded ordering | `https://raya-7150-village-pkwy.square.site` |
 | API host | `https://connect.squareup.com` |
 
-Needed in `.env` for on-site checkout to reach the POS:
+Needed in `/home/rayarest/rayaweb/.env` as **equals**, not colons:
 
 ```
-SQUARE_ACCESS_TOKEN=
-SQUARE_LOCATION_ID=
+SQUARE_ACCESS_TOKEN=EAAA...
+SQUARE_LOCATION_ID=L...
 SQUARE_API_HOST=https://connect.squareup.com
 SQUARE_SITE_SLUG=raya-7150-village-pkwy
 SQUARE_ORDER_URL=
+```
+
+Then restart Passenger:
+
+```bash
+cd /home/rayarest/rayaweb
+touch tmp/restart.txt
 ```
 
 Create those credentials in the Square Developer Dashboard with `ORDERS_WRITE`, `ORDERS_READ`, and `ITEMS_READ`. Without them, checkout will not invent a ticket — it tells the guest to finish on Square instead.

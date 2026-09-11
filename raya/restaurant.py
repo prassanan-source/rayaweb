@@ -41,8 +41,6 @@ restaurant = {
         "Sunol",
     ],
     "square": {
-        "location_id": Config.SQUARE_LOCATION_ID,
-        "slug": Config.SQUARE_SITE_SLUG,
         "location_name": "Raya - 7150 Village Pkwy",
     },
 }
@@ -59,7 +57,8 @@ def full_address_lines() -> list[str]:
 
 
 def square_order_url(mode: str | None = None) -> str:
-    base = (Config.SQUARE_ORDER_URL or "").rstrip("/") or f"https://{restaurant['square']['slug']}.square.site"
+    slug = Config.SQUARE_SITE_SLUG or "raya-7150-village-pkwy"
+    base = (Config.SQUARE_ORDER_URL or "").rstrip("/") or f"https://{slug}.square.site"
     if mode == "pickup":
         return f"{base}?fulfillment=PICKUP"
     if mode == "delivery":

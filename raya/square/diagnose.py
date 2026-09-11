@@ -1,5 +1,4 @@
-from raya.config import Config
-from raya.restaurant import restaurant
+from raya.config import Config, loaded_env_files
 
 
 def square_host() -> str:
@@ -17,11 +16,15 @@ def mask(value: str | None, kind: str) -> str:
 
 
 def credential_inventory() -> str:
+    env_files = loaded_env_files()
+    files_line = "env files: " + (", ".join(env_files) if env_files else "none found")
     return "\n".join(
         [
+            files_line,
+            "Use KEY=value (equals), not KEY: value (colon).",
             f"SQUARE_API_HOST: {square_host()}",
             f"SQUARE_ACCESS_TOKEN: {mask(Config.SQUARE_ACCESS_TOKEN, 'secret')}",
-            f"SQUARE_LOCATION_ID: {Config.SQUARE_LOCATION_ID or restaurant['square']['location_id'] or 'not set'}",
+            f"SQUARE_LOCATION_ID: {mask(Config.SQUARE_LOCATION_ID, 'id')}",
         ]
     )
 
@@ -42,7 +45,10 @@ def missing_credential_message() -> str:
             f"Missing environment {noun}: {', '.join(missing) or 'unknown'}.",
             "This is not a wrong-password error and not a write-privilege error — Square was never called.",
             "",
-            "Set these in .env (local) or /home/rayarest/rayaweb/.env (server), then restart the app:",
+            "Set these in /home/rayarest/rayaweb/.env using equals signs, then touch tmp/restart.txt:",
+            "SQUARE_ACCESS_TOKEN=your_square_token",
+            "SQUARE_LOCATION_ID=your_location_id",
+            "",
             credential_inventory(),
             "",
             "After they are set, a failed checkout will tell you whether the access token failed (HTTP 401) "

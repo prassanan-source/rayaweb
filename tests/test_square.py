@@ -110,6 +110,28 @@ def test_http_403_means_no_write_privilege():
     assert "ORDERS_WRITE" in error.args[0]
 
 
+def test_parse_env_file_accepts_equals_and_colon(tmp_path):
+    from raya.config import parse_env_file
+
+    path = tmp_path / ".env"
+    path.write_text(
+        "SQUARE_ACCESS_TOKEN=tok_123\n"
+        "SQUARE_LOCATION_ID: LXXXX\n"
+        "SQUARE_ACCESS_TOKEN: not set\n",
+        encoding="utf-8",
+    )
+    parsed = parse_env_file(path)
+    assert parsed["SQUARE_ACCESS_TOKEN"] == "not set"
+    assert parsed["SQUARE_LOCATION_ID"] == "LXXXX"
+
+
+def test_clean_ignores_not_set_placeholder():
+    from raya.config import _clean
+
+    assert _clean("not set") is None
+    assert _clean("EAAAabc") == "EAAAabc"
+
+
 def test_missing_credentials_message():
     message = missing_credential_message()
     assert "not a wrong-password error" in message
