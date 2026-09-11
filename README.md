@@ -65,20 +65,60 @@ Create those credentials in the Square Developer Dashboard with `ORDERS_WRITE`, 
 
 ## Deploy to the server
 
-SSH as `rayarest@rayarestaurant.com` and work in `/home/rayarest/rayaweb`:
+Production is **not** a git clone today. That is why this fails:
 
-```bash
-ssh rayarest@rayarestaurant.com
+```text
 cd /home/rayarest/rayaweb
 git pull
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-# set SQUARE_ACCESS_TOKEN and SQUARE_LOCATION_ID in /home/rayarest/rayaweb/.env
-gunicorn --bind 0.0.0.0:43127 wsgi:app
+fatal: not a git repository (or any of the parent directories): .git
 ```
 
-Point nginx for `rayarestaurant.com` at that process.
+On `s3838` as `rayarest`, turn the folder into a clone **without deleting `.env` or `.venv`**:
+
+```bash
+cd /home/rayarest/rayaweb
+
+# keep secrets and the running virtualenv
+cp -a .env /tmp/rayaweb.env.bak 2>/dev/null || true
+
+git init
+git remote remove origin 2>/dev/null || true
+git remote add origin https://github.com/prassanan-source/rayaweb.git
+git fetch origin
+git checkout -f -B square origin/cursor/square-order-4130
+
+# restore .env if git checkout replaced it
+test -f /tmp/rayaweb.env.bak && cp /tmp/rayaweb.env.bak .env
+
+# Square keys (create the file if it did not exist)
+grep -q SQUARE_ACCESS_TOKEN .env 2>/dev/null || cat >> .env << 'EOF'
+SQUARE_ACCESS_TOKEN=
+SQUARE_LOCATION_ID=
+SQUARE_API_HOST=https://connect.squareup.com
+SQUARE_SITE_SLUG=raya-7150-village-pkwy
+SQUARE_ORDER_URL=
+EOF
+
+# cPanel Passenger restart
+mkdir -p tmp
+touch tmp/restart.txt
+```
+
+After that, `git pull` works:
+
+```bash
+cd /home/rayarest/rayaweb
+git fetch origin
+git merge --ff-only origin/cursor/square-order-4130
+touch tmp/restart.txt
+```
+
+If the app uses a venv already:
+
+```bash
+source .venv/bin/activate   # or whatever path cPanel shows
+pip install -r requirements.txt
+```
 
 ## Contact (restaurant)
 
